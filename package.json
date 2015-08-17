@@ -4,9 +4,10 @@
   "dependencies": {
     "discord.js": "^2.5.0",
     "underscore": "^1.7.0",
+    "valid-url": "^1.0.9",
     "winston": "^0.9.0"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "0.12.x"
   }
 }
