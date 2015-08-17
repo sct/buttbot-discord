@@ -17,6 +17,9 @@ var logger = new (winston.Logger)({
 
 var buttBot = new Discord.Client();
 
+// Create HTTP server so that Heroku likes us
+var server = http.createServer(handleRequest);
+
 (function init() {
     log("info", "Welcome to ButtBot (Discord Edition)");
     log("info", "Remember! Isaac Buttimov's First Rule of Buttbotics: Don't let buttbot reply to buttbot.");
@@ -164,3 +167,9 @@ function log(level, msg, meta) {
 		}
 	}
 }
+
+//Lets start our server
+server.listen(config.web.port, function(){
+    //Callback triggered when server is successfully listening. Hurray!
+    console.log("Server listening on: http://localhost:%s", config.web.port);
+});
