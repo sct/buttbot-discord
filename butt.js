@@ -17,9 +17,6 @@ var logger = new (winston.Logger)({
 
 var buttBot = new Discord.Client();
 
-// Create HTTP server so that Heroku likes us
-var server = http.createServer(handleRequest);
-
 (function init() {
     log("info", "Welcome to ButtBot (Discord Edition)");
     log("info", "Remember! Isaac Buttimov's First Rule of Buttbotics: Don't let buttbot reply to buttbot.");
@@ -29,11 +26,11 @@ var server = http.createServer(handleRequest);
     log("debug", "Stop words loaded", stopwords);
 
     // Should we connect to Discord and start buttifying?
-    if (config.actuallyButt) {
+    if (config.bot.actuallyButt) {
         buttBot.login( config.bot.username, config.bot.password );
     }
 
-    buttify("test.", function(err, msg) {
+    buttify("FARTS.", function(err, msg) {
         if (!err.failed) {
             log("debug", msg);
         }
@@ -74,8 +71,13 @@ function buttify(string, callback) {
   // words from the string. Eventually we want to weight them and pick them
   // that way but for now this will work.
   //
+  // As of now we use wordsToPossiblyButt as a factor for buttification chance.
+  // If a sentance has 9 words it will be divided by the chance to possibly butt
+  // and has 3 chances to have butts in it. This means sentances shorter
+  // than the chance to butt will never be buttified.
+  //
   // We also check to make sure this index hasn't been buttified already!
-  for (x=0;x < (Math.floor(Math.random()*config.wordsToPossiblyButt) + 1); x++) {
+  for (x=0;x < (Math.floor(Math.random()*(Math.floor(split.length / config.wordsToPossiblyButt))) + 1); x++) {
       var rndIndex = Math.floor(Math.random()*split.length);
       var word = split[rndIndex];
 
@@ -118,13 +120,23 @@ function subButt(word) {
 
     var hyphenated = h.hyphenate(sWord);
 
-    if (hyphenated.length > 1 ) {
-        console.log(hyphenated);
-        var swapIndex = Math.floor(Math.random()*hyphenated.length);
-        hyphenated[swapIndex] = config.meme;
+    if (sWord === sWord.toUpperCase()) {
+        buttWord = buttWord.toUpperCase();
+    }
 
-        console.log(hyphenated);
+    if (hyphenated.length > 1 ) {
+        var swapIndex = Math.floor(Math.random()*hyphenated.length);
+
+        if (swapIndex == 0 && sWord.match(/^[A-Z]/)) {
+            buttWord = capitalizeFirstLetter(buttWord);
+        }
+        hyphenated[swapIndex] = buttWord;
+
         buttWord = hyphenated.join("");
+    } else {
+        if (sWord.match(/^[A-Z]/)) {
+            buttWord = capitalizeFirstLetter(buttWord);
+        }
     }
 
     return pS + buttWord + pE;
@@ -156,6 +168,9 @@ function finishButtification(split) {
     return split.join(" ");
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function log(level, msg, meta) {
 	if (config.logging && config.logging != 0) {
@@ -167,9 +182,3 @@ function log(level, msg, meta) {
 		}
 	}
 }
-
-//Lets start our server
-server.listen(config.web.port, function(){
-    //Callback triggered when server is successfully listening. Hurray!
-    console.log("Server listening on: http://localhost:%s", config.web.port);
-});
