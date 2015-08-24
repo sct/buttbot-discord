@@ -116,9 +116,7 @@ function subButt(word) {
         sWord = punc[2],
         pE = punc[3];
 
-    var lcWord = word.toLowerCase();
-    // Check if stop word or already a butt or a url
-    if (lcWord == config.meme || sWord.toLowerCase() == config.meme || _.contains(stopwords, lcWord) || validUrl.isUri(word)) {
+    if (shouldWeButt(sWord)) {
         return ogWord;
     }
 
@@ -146,6 +144,13 @@ function subButt(word) {
     return pS + buttWord + pE;
 }
 
+/**
+ * Did we actually change the string at all?
+ *
+ * @param  {string} original  Original version of the string
+ * @param  {string} newString Possibly buttified version of the string
+ * @return {bool}
+ */
 function didWeActuallyButt(original, newString) {
     if (original == newString) {
         return false;
@@ -168,12 +173,54 @@ function prepareForButtification(string) {
   return split;
 }
 
+/**
+ * Rejoin string after done buttifying
+ *
+ * @param  {Array} split Array of updated string
+ * @return {string}
+ */
 function finishButtification(split) {
     return split.join(" ");
 }
 
+/**
+ * Capitalize the first letter of a word
+ *
+ * @param  {string} string Word to capitalize
+ * @return {string}
+ */
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+/**
+ * Determine if word should be butted
+ *
+ * @param  {string} string  Stripped version of the word
+ * @return {bool}
+ */
+function shouldWeButt(string) {
+    // Is the word the same as our meme?
+    if (string.toLowerCase() == config.meme) {
+        return false;
+    }
+
+    // Is the word a stop word?
+    if (_.contains(stopwords, string)) {
+        return false;
+    }
+
+    // Is the word a URL?
+    if (validUrl.isUri(string)) {
+        return false;
+    }
+
+    // Is the word a mention?
+    if (string.match(/^@[A-Za-z0-9]/)) {
+        return false;
+    }
+
+    return true;
 }
 
 function log(level, msg, meta) {
