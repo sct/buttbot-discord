@@ -16,6 +16,8 @@ config.bot.password = process.env.DISCORD_PASSWORD
 config.meme = "butt";
 config.chanceToButt = 0.80;
 config.wordsToPossiblyButt = 3;
+config.buttBuffer = 5;
+config.minimumWordsBeforeButtification = 2;
 
 // WARNING
 // IF YOU CHANGE THIS THE POLICE CAN MAYBE TAKE YOU TO JAIL

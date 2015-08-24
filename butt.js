@@ -16,25 +16,20 @@ var logger = new (winston.Logger)({
 });
 
 var buttBot = new Discord.Client();
+var locked = 0;
 
 (function init() {
     log("info", "Welcome to ButtBot (Discord Edition)");
     log("info", "Remember! Isaac Buttimov's First Rule of Buttbotics: Don't let buttbot reply to buttbot.");
 
     // Load all the stop words from file
-    stopwords = fs.readFileSync('stopwords').toString().split(/\r\n/);
+    stopwords = fs.readFileSync('stopwords').toString().split(/\r\n?|\n/);
     log("debug", "Stop words loaded", stopwords);
 
     // Should we connect to Discord and start buttifying?
     if (config.bot.actuallyButt) {
         buttBot.login( config.bot.username, config.bot.password );
     }
-
-    buttify("FARTS.", function(err, msg) {
-        if (!err.failed) {
-            log("debug", msg);
-        }
-    });
 })()
 
 
@@ -43,12 +38,16 @@ buttBot.on( "ready", function() {
 } );
 
 buttBot.on("message", function(message) {
-    // message.content accesses the content of the message as a string.
-    // If it is equal to "ping", then the bot should respond with "pong".
     if (config.breakTheFirstRuleOfButtbotics || buttBot.user.id != message.author.id) {
-        if (Math.random() > config.chanceToButt) {
+        // If buffer locked, remove one from lock unless 0
+        if (locked > 0) {
+            locked--;
+        }
+
+        if (Math.random() > config.chanceToButt && locked == 0) {
             buttify(message.content, function(err, msg) {
                 if (!err.failed) {
+                    locked = config.buttBuffer;
                     buttBot.sendMessage(message.channel, msg);
                 }
             });
@@ -64,6 +63,11 @@ function buttify(string, callback) {
 
   // Separate the string into an array
   var split = prepareForButtification(string);
+
+  if (split.length < config.minimumWordsBeforeButtification) {
+      err = {"failed": true, "msg": "Not enough words to buttify"};
+      return callback(err);
+  }
 
   log("debug", "Test Hyphenation", h.hyphenateText(string));
 
