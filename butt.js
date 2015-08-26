@@ -9,9 +9,9 @@ var validUrl = require('valid-url');
 var redis = require('redis');
 var h = new Hypher(english);
 var stopwords = [];
-var Commands = require('./commands').Commands;
-var authority = require('./authority');
-var stats = require('./stats');
+var Commands = require('./lib/commands').Commands;
+var authority = require('./lib/authority');
+var stats = require('./lib/stats');
 
 var logger = new (winston.Logger)({
   transports: [
@@ -28,7 +28,7 @@ var buttBot = new Discord.Client();
     log("info", "Remember! Isaac Buttimov's First Rule of Buttbotics: Don't let buttbot reply to buttbot.");
 
     // Load all the stop words from file
-    stopwords = fs.readFileSync('stopwords').toString().split(/\r\n?|\n/);
+    stopwords = fs.readFileSync('./lib/stopwords').toString().split(/\r\n?|\n/);
     log("debug", "Stop words loaded", stopwords);
 
     // Should we connect to Discord and start buttifying?
