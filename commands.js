@@ -1,5 +1,7 @@
 var config = require('./config');
 var authority = require('./authority');
+var stats = require('./stats');
+var _ = require('underscore');
 
 Commands = [];
 
@@ -8,8 +10,26 @@ Commands["info"] = {
     fn: function(bot, params, message) {
         bot.reply(message, [
             "Hi! I am **ButtBot**!",
-            "I don't have anything else interesting to say because I currently do not persist data."
+            "I have buttified " + stats.getStat(message.channel.server, "buttifyCount") + " messages in **" + message.channel.server.name + "**",
+            "Across all servers, I have buttified " + stats.getGlobalStat("buttifyCount") + " messages",
+            "I am connected to " + bot.servers.length + " servers and I can be in yours! Type **" + config.bot.commandPrefix + "join <invite id>** to have your own Buttbot!",
+            "Need help? Type **" + config.bot.commandPrefix + "help**"
         ]);
+    }
+}
+
+Commands["help"] = {
+    authLevel: 0,
+    fn: function(bot, params, message) {
+        var ac = _.keys(Commands);
+
+        var acString = ac.join(", ");
+
+        bot.reply(message, [
+            "Buttbot help is available 24/7 for all your buttifying needs!",
+            "**Available Commands:**",
+            acString
+        ])
     }
 }
 
@@ -94,6 +114,14 @@ Commands['revoke'] = {
         } else {
             return bot.reply(message, "you must give me a user!");
         }
+    }
+}
+
+Commands['reset'] = {
+    authLevel: 2,
+    fn: function(bot, params, message) {
+        stats.reset(message.channel.server);
+        bot.reply(message, "I have reset the stats for this server.");
     }
 }
 

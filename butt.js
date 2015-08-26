@@ -11,6 +11,7 @@ var h = new Hypher(english);
 var stopwords = [];
 var Commands = require('./commands').Commands;
 var authority = require('./authority');
+var stats = require('./stats');
 
 var logger = new (winston.Logger)({
   transports: [
@@ -21,7 +22,6 @@ var logger = new (winston.Logger)({
 var rclient = redis.createClient(config.redis.port, config.redis.host);
 
 var buttBot = new Discord.Client();
-var locked = 0;
 
 (function init() {
     log("info", "Welcome to ButtBot (Discord Edition)");
@@ -40,6 +40,7 @@ var locked = 0;
 
 buttBot.on( "ready", function() {
     log("info", "Bot connected successfully." );
+    stats.init(this);
 } );
 
 buttBot.on("message", function(message) {
@@ -60,7 +61,6 @@ buttBot.on("message", function(message) {
             if (res && res != 0) {
                 locked = res
                 rclient.set("server:lock:" + message.channel.server.id, locked - 1);
-                console.log(locked);
             }
 
             if (Math.random() > config.chanceToButt && locked <= 0) {
@@ -68,6 +68,8 @@ buttBot.on("message", function(message) {
                     if (!err.failed) {
                         rclient.set("server:lock:" + message.channel.server.id, config.buttBuffer);
                         buttBot.sendMessage(message.channel, msg);
+                        stats.setStat(message.channel.server, "buttifyCount", parseInt(stats.getStat(message.channel.server, "buttifyCount")) + 1);
+                        stats.setGlobalStat("buttifyCount", parseInt(stats.getGlobalStat("buttifyCount")) + 1)
                     }
                 });
             }
