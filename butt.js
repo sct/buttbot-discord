@@ -6,14 +6,19 @@ var Discord = require( "discord.js" );
 var Hypher = require('hypher');
 var english = require('hyphenation.en-us');
 var validUrl = require('valid-url');
+var redis = require('redis');
 var h = new Hypher(english);
 var stopwords = [];
+var Commands = require('./commands').Commands;
+var authority = require('./authority');
 
 var logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)({ level: config.logging_level })
   ]
 });
+
+var rclient = redis.createClient(config.redis.port, config.redis.host);
 
 var buttBot = new Discord.Client();
 var locked = 0;
@@ -38,23 +43,59 @@ buttBot.on( "ready", function() {
 } );
 
 buttBot.on("message", function(message) {
-    if (config.breakTheFirstRuleOfButtbotics || buttBot.user.id != message.author.id) {
-        // If buffer locked, remove one from lock unless 0
-        if (locked > 0) {
-            locked--;
-        }
+    if (config.bot.enableCommands && message.content.charAt(0) == config.bot.commandPrefix) {
+            handleBotCommand(message);
+            return;
+    }
 
-        if (Math.random() > config.chanceToButt && locked == 0) {
-            buttify(message.content, function(err, msg) {
-                if (!err.failed) {
-                    locked = config.buttBuffer;
-                    buttBot.sendMessage(message.channel, msg);
-                }
-            });
-        }
+    if (config.breakTheFirstRuleOfButtbotics || buttBot.user.id != message.author.id) {
+
+        rclient.get("server:lock:" + message.channel.server.id, function(err, res) {
+            if (err) {
+                return log("error", "Error with server lock request", err);
+            }
+
+            var locked = 0;
+
+            if (res && res != 0) {
+                locked = res
+                rclient.set("server:lock:" + message.channel.server.id, locked - 1);
+                console.log(locked);
+            }
+
+            if (Math.random() > config.chanceToButt && locked <= 0) {
+                buttify(message.content, function(err, msg) {
+                    if (!err.failed) {
+                        rclient.set("server:lock:" + message.channel.server.id, config.buttBuffer);
+                        buttBot.sendMessage(message.channel, msg);
+                    }
+                });
+            }
+        });
     }
 
 });
+
+function handleBotCommand(message) {
+    message.content = message.content.substr(1);
+
+    var chunks = message.content.split(" ");
+    var command = chunks[0];
+    var params = chunks.slice(1);
+
+    if (Commands[command]) {
+        var user = message.author;
+
+        authority.getUserLevel(message.channel.server, user, function(err, level) {
+            if (level >= Commands[command].authLevel) {
+                Commands[command].fn(buttBot, params, message);
+            } else {
+                bot.reply(message, "you do not have access to this command!");
+            }
+        });
+
+    }
+}
 
 function buttify(string, callback) {
   var originalString = string;
