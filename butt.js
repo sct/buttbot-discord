@@ -12,6 +12,7 @@ var stopwords = [];
 var Commands = require('./lib/commands').Commands;
 var authority = require('./lib/authority');
 var stats = require('./lib/stats');
+var options = require('./lib/options');
 
 var logger = new (winston.Logger)({
   transports: [
@@ -41,6 +42,7 @@ var buttBot = new Discord.Client();
 buttBot.on( "ready", function() {
     log("info", "Bot connected successfully." );
     stats.init(this);
+    options.init(this);
 } );
 
 buttBot.on("message", function(message) {
@@ -49,7 +51,7 @@ buttBot.on("message", function(message) {
             return;
     }
 
-    if (config.breakTheFirstRuleOfButtbotics || buttBot.user.id != message.author.id) {
+    if ((config.breakTheFirstRuleOfButtbotics || buttBot.user.id != message.author.id) && (!options.getOption(message.channel.server, "muted") && !_.contains(options.getOption(message.channel.server, "mutedChannels"), message.channel.id))) {
 
         rclient.get("server:lock:" + message.channel.server.id, function(err, res) {
             if (err) {
@@ -92,7 +94,7 @@ function handleBotCommand(message) {
             if (level >= Commands[command].authLevel) {
                 Commands[command].fn(buttBot, params, message);
             } else {
-                bot.reply(message, "you do not have access to this command!");
+                buttBot.reply(message, "you do not have access to this command!");
             }
         });
 
