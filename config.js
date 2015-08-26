@@ -16,7 +16,7 @@ config.bot.password = process.env.DISCORD_PASSWORD
 // Bot Configuration
 config.bot.enableCommands = true;
 config.bot.commandPrefix = "!";
-config.bot.masterUserId = 42432475263139840; // User ID of main bot owner. Overrides all auth
+config.bot.masterUserId = process.env.DISCORD_USER_ID; // User ID of main bot owner. Overrides all auth
 
 // Buttify Configuration
 config.meme = "butt";
