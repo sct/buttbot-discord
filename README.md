@@ -12,6 +12,8 @@ Okay cool you can do that. Clone this repo and modify config.js to your liking.
 
 Make sure to set environment variables for `DISCORD_USERNAME` and `DISCORD_PASSWORD` so we can actually connect to Discord.
 
+You also need to now set a `DISCORD_USER_ID` if you wish to override auth for any reason.
+
 You will need to have a Discord account that is already registered and in the channels you want the bot to work with. Right now it will buttify all channels it is in and has no real configuration but that's coming soon!
 
 When you are ready: `node butt.js`
