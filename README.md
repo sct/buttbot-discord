@@ -1,22 +1,10 @@
-ButtJS (A Discord ButtBot)
+ButtBot Discord (A Discord ButtBot)
 ==========================
-ButtJS is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
+ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
 
-ButtJS currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.
+ButtBot Discord currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.
 
-Thanks to the guys working hard on reverse engineering the discord API so I could develop this. ButtJS uses [Discord.js](https://github.com/discord-js/discord.js) to connect to [Discord](https://discordapp.com/).
-
-I want to use this!
--------------------
-Okay cool you can do that. Clone this repo and modify config.js to your liking.
-
-Make sure to set environment variables for `DISCORD_USERNAME` and `DISCORD_PASSWORD` so we can actually connect to Discord.
-
-You also need to now set a `DISCORD_USER_ID` if you wish to override auth for any reason.
-
-You will need to have a Discord account that is already registered and in the channels you want the bot to work with. Right now it will buttify all channels it is in and has no real configuration but that's coming soon!
-
-When you are ready: `node butt.js`
+Finally updated this to work again on the latest API.
 
 Contribution
 ------------
