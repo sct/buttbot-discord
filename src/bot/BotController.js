@@ -69,7 +69,11 @@ class BotController {
     }
 
     // Do the thing to handle the butt chance here
-    if ((this.client.user.id !== message.author.id || config.breakTheFirstRuleOfButtbotics)
+    if ((
+      this.client.user.id !== message.author.id
+      || !message.author.bot
+      || config.breakTheFirstRuleOfButtbotics
+    )
       && whitelist.includes(message.channel.name) && server.lock === 0
       && Math.random() > config.chanceToButt) {
       buttify(message.content)
