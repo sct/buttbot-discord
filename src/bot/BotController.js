@@ -21,6 +21,10 @@ class BotController {
       logger.info('Welcome to ButtBot (Discord Edition)');
       logger.info('Remember! Isaac Buttimov\'s First Rule of Buttbotics: Don\'t let buttbot reply to buttbot.');
       logger.info('Connected to Discord');
+
+      this.client.user.setPresence({
+        game: { name: '?butt help | ?butt about' },
+      });
     });
   }
 
