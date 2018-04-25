@@ -37,7 +37,7 @@ class Server {
 
         return resolve(server.whitelist);
       });
-    })
+    });
 
   updateWhitelist = (channelName, remove) => {
     if (remove) {
@@ -47,6 +47,29 @@ class Server {
     }
 
     logger.debug(`Updating whitelist with: #${channelName} Removal: ${remove ? 'true' : 'false'}`);
+  }
+
+  getRoles = () =>
+    new Promise((resolve, reject) => {
+      this.db.findOne({ _id: this.id }, (err, server) => {
+        if (!server) {
+          return reject(new Error('Cant find server in database'));
+        }
+
+        // We do a conditional here incase the server record doesnt already have the
+        // roles array
+        return resolve(server.roles || []);
+      });
+    });
+
+  updateRoles = (role, remove) => {
+    if (remove) {
+      this.db.update({ _id: this.id }, { $pull: { roles: role.id } });
+    } else {
+      this.db.update({ _id: this.id }, { $addToSet: { roles: role.id } });
+    }
+
+    logger.debug(`Updating access with: ${role.name} Removal: ${remove ? 'true' : 'false'}`);
   }
 }
 

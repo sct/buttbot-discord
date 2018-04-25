@@ -4,7 +4,7 @@ import logger from '../core/logger';
 import { commandAbout, commandFirstRule } from './commands/generalCommands';
 import buttify from '../core/butt';
 import config from '../config';
-import { commandServerWhitelist } from './commands/serverCommands';
+import { commandServerWhitelist, commandServerAccess } from './commands/serverCommands';
 import servers from '../core/handlers/Servers';
 
 const BOT_SYMBOL = '?';
@@ -50,6 +50,8 @@ class BotController {
         return commandFirstRule(message);
       case 'whitelist':
         return commandServerWhitelist(message);
+      case 'access':
+        return commandServerAccess(message);
       default:
         return null;
     }
