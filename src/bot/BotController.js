@@ -1,7 +1,7 @@
 import Discord from 'discord.js';
 
 import logger from '../core/logger';
-import { commandAbout, commandFirstRule } from './commands/generalCommands';
+import { commandAbout, commandFirstRule, commandUnknown, commandHelp } from './commands/generalCommands';
 import buttify from '../core/butt';
 import config from '../config';
 import { commandServerWhitelist, commandServerAccess } from './commands/serverCommands';
@@ -30,7 +30,7 @@ class BotController {
 
   loadListeners = () => {
     this.client.on('message', message => {
-      if (message.content.match(/^\?butt\s(.*)/)) {
+      if (message.content.match(/^\?butt(.*)/)) {
         this.handleCommand(message);
       } else {
         this.handleButtChance(message);
@@ -46,6 +46,8 @@ class BotController {
     switch (command[0]) {
       case 'about':
         return commandAbout(message);
+      case 'help':
+        return commandHelp(message);
       case 'firstrule':
         return commandFirstRule(message);
       case 'whitelist':
@@ -53,7 +55,7 @@ class BotController {
       case 'access':
         return commandServerAccess(message);
       default:
-        return null;
+        return commandUnknown(message);
     }
   }
 

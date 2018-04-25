@@ -50,8 +50,6 @@ export async function commandServerAccess(message) {
   const server = await Servers.getServer(message.guild.id);
   const roles = await server.getRoles();
 
-  const { member } = message;
-
   if (!verifyPermission(message)) {
     throw new Error('Permissions check failed');
   }
