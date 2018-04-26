@@ -1,24 +1,35 @@
 import { RichEmbed } from 'discord.js';
 
 import { version } from '../../../package.json';
+import stats from '../../core/handlers/Stats';
+import servers from '../../core/handlers/Servers';
 
 export const commandUnknown = (message) => {
   message.channel.send('Sorry! I don\'t know what you want of me! Try **?butt help** or **?butt about**');
 };
 
-export const commandAbout = (message) => {
+export async function commandAbout(message) {
+  const buttifyCount = await stats.getButtifyCount();
+  const server = await servers.getServer(message.guild.id);
+
+  const serverButtifyCount = await server.getButtifyCount();
+
   const embed = new RichEmbed()
     .setAuthor('ButtBot')
     .setDescription(`ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
 
 ButtBot Discord currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.`)
     .addField('Help Command', '?butt help')
+    .addBlankField()
+    .addField('Buttified Servers', message.client.guilds.size, true)
+    .addField('Global Buttified Messages', buttifyCount, true)
+    .addField('This Servers Buttifications', serverButtifyCount, true)
     .addField('GitHub', 'https://github.com/sct/buttbot-discord')
     .setFooter(`Version: ${version}`)
     .setColor([212, 228, 32]);
 
   message.channel.send(embed);
-};
+}
 
 export const commandHelp = (message) => {
   const embed = new RichEmbed()
@@ -30,10 +41,19 @@ export const commandHelp = (message) => {
     .setColor([212, 228, 32]);
 
   message.channel.send(embed);
-}
+};
 
 export const commandFirstRule = (message) => {
   message.reply('remember! Isaac Buttimov\'s First Rule of Buttbotics: Don\'t let buttbot reply to buttbot.');
 };
+
+export async function commandButtifyCount(message) {
+  const buttifyCount = await stats.getButtifyCount();
+  const server = await servers.getServer(message.guild.id);
+
+  const serverButtifyCount = await server.getButtifyCount();
+
+  message.channel.send(`I have buttified ${serverButtifyCount} message(s) on this server. Globally, I have already buttified ${buttifyCount} messages!`);
+}
 
 export default commandAbout;

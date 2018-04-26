@@ -1,7 +1,7 @@
 import Discord from 'discord.js';
 
 import logger from '../core/logger';
-import { commandAbout, commandFirstRule, commandUnknown, commandHelp } from './commands/generalCommands';
+import { commandAbout, commandFirstRule, commandUnknown, commandHelp, commandButtifyCount } from './commands/generalCommands';
 import buttify from '../core/butt';
 import config from '../config';
 import { commandServerWhitelist, commandServerAccess } from './commands/serverCommands';
@@ -54,6 +54,8 @@ class BotController {
         return commandHelp(message);
       case 'firstrule':
         return commandFirstRule(message);
+      case 'stats':
+        return commandButtifyCount(message);
       case 'whitelist':
         return commandServerWhitelist(message);
       case 'access':
@@ -88,6 +90,7 @@ class BotController {
         .then(buttified => {
           message.channel.send(buttified);
           server.lock = config.buttBuffer;
+          server.trackButtification();
         })
         .catch(error => logger.debug(error));
     }
