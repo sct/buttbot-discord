@@ -21,7 +21,7 @@ export async function commandServerWhitelist(message) {
 
   const whitelist = await server.getWhitelist();
 
-  if (!verifyPermission(message)) {
+  if (!await verifyPermission(message)) {
     throw new Error('Permissions check failed');
   }
 
