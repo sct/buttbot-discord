@@ -5,10 +5,10 @@ dotenv.config();
 const config = {};
 
 config.meme = process.env.BOT_MEME || 'butt';
-config.minimumWordsBeforeButtification = process.env.BOT_MINIMUM_BEFORE_BUTTIFY || 3;
-config.wordsToPossiblyButt = process.env.BOT_WORDS_TO_POSSIBLY_BUTT || 3;
-config.chanceToButt = process.env.BOT_CHANCE || 0.80;
-config.buttBuffer = process.env.BOT_BUFF_BUFFER || 5;
+config.minimumWordsBeforeButtification = parseInt(process.env.BOT_MINIMUM_BEFORE_BUTTIFY, 10) || 3;
+config.wordsToPossiblyButt = parseInt(process.env.BOT_WORDS_TO_POSSIBLY_BUTT, 10) || 3;
+config.chanceToButt = parseFloat(process.env.BOT_CHANCE, 10) || 0.20;
+config.buttBuffer = parseInt(process.env.BOT_BUTT_BUFFER, 10) || 5;
 
 // WARNING
 // IF YOU CHANGE THIS THE POLICE CAN MAYBE TAKE YOU TO JAIL

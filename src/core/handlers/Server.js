@@ -3,6 +3,7 @@ import db from '../db';
 import Servers from './Servers';
 import logger from '../logger';
 import stats from './Stats';
+import config from '../../config';
 
 class Server {
   constructor(serverId) {
@@ -87,6 +88,51 @@ class Server {
         }
 
         return resolve(server.buttifyCount || 0);
+      });
+    });
+
+  setSetting = (name, value) => {
+    const newSetting = {};
+
+    newSetting[`settings.${name}`] = value;
+
+    this.db.update({ _id: this.id }, { $set: newSetting });
+  }
+
+  getSetting = (name) =>
+    new Promise((resolve, reject) => {
+      this.db.findOne({ _id: this.id }, (err, server) => {
+        if (!server) {
+          return reject(new Error('Cant find server in database'));
+        }
+
+        if (!server.settings && !server.settings[name]) {
+          return resolve(config[name]);
+        }
+
+        return resolve(server.settings[name]);
+      });
+    });
+
+  getSettings = () =>
+    new Promise((resolve, reject) => {
+      this.db.findOne({ _id: this.id }, (err, server) => {
+        if (!server) {
+          return reject(new Error('Cant find server in database'));
+        }
+
+        if (!server.settings) {
+          return resolve(config);
+        }
+
+        console.log(server.settings);
+
+        const settings = config;
+
+        settings.chanceToButt = server.settings.chanceToButt || config.chanceToButt;
+        settings.buttBuffer = server.settings.buttBuffer || config.buttBuffer;
+
+        return resolve(settings);
       });
     });
 }

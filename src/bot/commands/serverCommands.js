@@ -77,4 +77,41 @@ export async function commandServerAccess(message) {
   return message.channel.send(`Adding ${role.name} to ButtBot access`);
 }
 
+export async function commandServerSetting(message, setting, value) {
+  const server = await Servers.getServer(message.guild.id);
+
+  if (!await verifyPermission(message)) {
+    throw new Error('Permissions check failed');
+  }
+
+  if (!server) {
+    throw new Error('Server doesnt exist. How are you even doing this?');
+  }
+
+  const validSettings = ['chanceToButt', 'buttBuffer'];
+
+  if (!setting || !validSettings.includes(setting)) {
+    message.channel.send(`Unknown setting. Valid settings are: ${validSettings.join(', ')}`);
+    throw new Error('Unknown setting passed to bot');
+  }
+
+  if (!value) {
+    message.channel.send('You must pass in a value');
+  }
+
+  switch (setting) {
+    case 'chanceToButt':
+      if (parseFloat(value, 10) < 0 || parseFloat(value, 10) > 1) {
+        message.channel.send('You must pass in a value between 0 and 1');
+        throw new Error('Invalid value passed in for chanceToButt');
+      }
+
+      message.channel.send(`The setting **${setting}** has been updated to: ${value}`);
+      return server.setSetting(setting, parseFloat(value, 10));
+    default:
+      message.channel.send(`The setting **${setting}** has been updated to: ${value}`);
+      return server.setSetting(setting, value);
+  }
+}
+
 export default commandServerWhitelist;

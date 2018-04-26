@@ -3,8 +3,7 @@ import Discord from 'discord.js';
 import logger from '../core/logger';
 import { commandAbout, commandFirstRule, commandUnknown, commandHelp, commandButtifyCount } from './commands/generalCommands';
 import buttify from '../core/butt';
-import config from '../config';
-import { commandServerWhitelist, commandServerAccess } from './commands/serverCommands';
+import { commandServerWhitelist, commandServerAccess, commandServerSetting } from './commands/serverCommands';
 import servers from '../core/handlers/Servers';
 
 const BOT_SYMBOL = '?';
@@ -60,6 +59,8 @@ class BotController {
         return commandServerWhitelist(message);
       case 'access':
         return commandServerAccess(message);
+      case 'setting':
+        return commandServerSetting(message, command[1], command[2]);
       default:
         return commandUnknown(message);
     }
@@ -69,6 +70,7 @@ class BotController {
     const server = await servers.getServer(message.guild.id);
 
     const whitelist = await server.getWhitelist();
+    const config = await server.getSettings();
 
     // This is a small in-memory lock to prevent the bot from spamming back to back messages
     // on a single server due to strange luck.
@@ -85,7 +87,7 @@ class BotController {
       || config.breakTheFirstRuleOfButtbotics
     )
       && whitelist.includes(message.channel.name) && server.lock === 0
-      && Math.random() > config.chanceToButt) {
+      && Math.random() < config.chanceToButt) {
       buttify(message.content)
         .then(buttified => {
           message.channel.send(buttified);
