@@ -125,8 +125,6 @@ class Server {
           return resolve(config);
         }
 
-        console.log(server.settings);
-
         const settings = config;
 
         settings.chanceToButt = server.settings.chanceToButt || config.chanceToButt;
