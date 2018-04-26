@@ -35,7 +35,7 @@ export const commandHelp = (message) => {
   const embed = new RichEmbed()
     .setAuthor('ButtBot Help')
     .setDescription('The following commands are available to roles with permissions or server owners:')
-    .addField('?butt whitelist @channelname', 'Add or remove a channel from the buttification whitelist. By default, no channels are added.')
+    .addField('?butt whitelist #channelname', 'Add or remove a channel from the buttification whitelist. By default, no channels are added.')
     .addField('?butt access @rolename', 'Add or remove a role from access control to ButtBot.')
     .setFooter('Never forget the firstrule')
     .setColor([212, 228, 32]);
