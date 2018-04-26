@@ -7,7 +7,9 @@ async function verifyPermission(message) {
 
   const { member } = message;
 
-  if (member.id !== message.guild.ownerID && !roles.find(roleId => member.roles.get(roleId))) {
+  if (member.id !== message.guild.ownerID
+    && !roles.find(roleId => member.roles.get(roleId))
+    && !member.hasPermissions('MANAGE_GUILD')) {
     message.channel.send('You do not have permission to manage buttification');
     logger.debug('Unauthorized user attempting command access');
     return false;
@@ -50,7 +52,7 @@ export async function commandServerAccess(message) {
   const server = await Servers.getServer(message.guild.id);
   const roles = await server.getRoles();
 
-  if (!verifyPermission(message)) {
+  if (!await verifyPermission(message)) {
     throw new Error('Permissions check failed');
   }
 
