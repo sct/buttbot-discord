@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon -w src --exec \"babel-node src/\"",
     "start": "babel-node src/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint \"**/*.js\" --ignore-path .gitignore"
   },
   "author": "sct",
   "license": "MIT",
@@ -14,8 +15,13 @@
     "babel-eslint": "^8.2.2",
     "eslint": "^4.18.2",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-import": "^2.7.0",
-    "nodemon": "^1.17.3"
+    "eslint-plugin-prettier": "^2.6.2",
+    "husky": "^1.0.0-rc.15",
+    "lint-staged": "^7.3.0",
+    "nodemon": "^1.17.3",
+    "prettier": "^1.14.3"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -50,13 +56,27 @@
       "transform-runtime"
     ]
   },
+  "prettier": {
+    "singleQuote": true
+  },
   "eslintConfig": {
     "parser": "babel-eslint",
     "rules": {
       "arrow-parens": "off"
     },
     "extends": [
-      "airbnb-base"
+      "plugin:prettier/recommended"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }

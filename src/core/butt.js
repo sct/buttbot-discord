@@ -14,7 +14,7 @@ const h = new Hypher(english);
  * @param  {string} string String input
  * @return {array} Ready to buttify
  */
-const prepareForButtification = (string) => {
+const prepareForButtification = string => {
   const trimmed = string.trim();
   const split = trimmed.split(' ');
 
@@ -32,22 +32,22 @@ function finishButtification(split) {
 }
 
 /**
-* Capitalize the first letter of a word
-*
-* @param  {string} string Word to capitalize
-* @return {string}
-*/
+ * Capitalize the first letter of a word
+ *
+ * @param  {string} string Word to capitalize
+ * @return {string}
+ */
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 /**
-* Determine if word should be butted
-*
-* @param  {string} string  Stripped version of the word
-* @return {bool}
-*/
-const shouldWeButt = (string) => {
+ * Determine if word should be butted
+ *
+ * @param  {string} string  Stripped version of the word
+ * @return {bool}
+ */
+const shouldWeButt = string => {
   // Is the word the same as our meme?
   if (string.toLowerCase() === config.meme) {
     return false;
@@ -55,7 +55,7 @@ const shouldWeButt = (string) => {
 
   // Is the word a stop word?
   let stopWordExists = false;
-  stopwords.forEach((word) => {
+  stopwords.forEach(word => {
     if (string.toLowerCase() === word.toLowerCase()) {
       stopWordExists = true;
     }
@@ -88,7 +88,7 @@ const didWeActuallyButt = (original, newString) => {
   return true;
 };
 
-const subButt = (word) => {
+const subButt = word => {
   const ogWord = word;
   let buttWord = config.meme;
 
@@ -124,7 +124,7 @@ const subButt = (word) => {
   return pS + buttWord + pE;
 };
 
-const buttify = (string) =>
+const buttify = string =>
   new Promise((resolve, reject) => {
     const originalString = string;
     const buttdex = [];
@@ -136,7 +136,7 @@ const buttify = (string) =>
     if (split.length < config.minimumWordsBeforeButtification) {
       err = {
         failed: true,
-        msg: 'Not enough words to buttify',
+        msg: 'Not enough words to buttify'
       };
       return reject(err);
     }
@@ -155,7 +155,11 @@ const buttify = (string) =>
     // We also check to make sure this index hasn't been buttified already!
     for (
       let x = 0;
-      x < (Math.floor(Math.random() * (Math.floor(split.length / config.wordsToPossiblyButt))) + 1);
+      x <
+      Math.floor(
+        Math.random() * Math.floor(split.length / config.wordsToPossiblyButt)
+      ) +
+        1;
       x += 1
     ) {
       const rndIndex = Math.floor(Math.random() * split.length);
@@ -176,7 +180,7 @@ const buttify = (string) =>
     if (!didWeActuallyButt(originalString, final)) {
       err = {
         failed: true,
-        msg: 'We didn\'t buttify anything! Abort!',
+        msg: "We didn't buttify anything! Abort!"
       };
     }
 

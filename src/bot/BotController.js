@@ -1,9 +1,19 @@
 import Discord from 'discord.js';
 
 import logger from '../core/logger';
-import { commandAbout, commandFirstRule, commandUnknown, commandHelp, commandButtifyCount } from './commands/generalCommands';
+import {
+  commandAbout,
+  commandFirstRule,
+  commandUnknown,
+  commandHelp,
+  commandButtifyCount
+} from './commands/generalCommands';
 import buttify from '../core/butt';
-import { commandServerWhitelist, commandServerAccess, commandServerSetting } from './commands/serverCommands';
+import {
+  commandServerWhitelist,
+  commandServerAccess,
+  commandServerSetting
+} from './commands/serverCommands';
 import servers from '../core/handlers/Servers';
 
 const BOT_SYMBOL = '?';
@@ -18,18 +28,20 @@ class BotController {
 
     this.client.on('ready', () => {
       logger.info('Welcome to ButtBot (Discord Edition)');
-      logger.info('Remember! Isaac Buttimov\'s First Rule of Buttbotics: Don\'t let buttbot reply to buttbot.');
+      logger.info(
+        "Remember! Isaac Buttimov's First Rule of Buttbotics: Don't let buttbot reply to buttbot."
+      );
       logger.info('Connected to Discord');
 
       this.client.user.setPresence({
-        game: { name: '?butt help | ?butt about' },
+        game: { name: '?butt help | ?butt about' }
       });
     });
-  }
+  };
 
   prepare = () => {
     this.loadListeners();
-  }
+  };
 
   loadListeners = () => {
     this.client.on('message', message => {
@@ -39,10 +51,12 @@ class BotController {
         this.handleButtChance(message);
       }
     });
-  }
+  };
 
-  handleCommand = (message) => {
-    const command = message.content.replace(`${BOT_SYMBOL}butt `, '').split(' ');
+  handleCommand = message => {
+    const command = message.content
+      .replace(`${BOT_SYMBOL}butt `, '')
+      .split(' ');
 
     logger.info(command);
 
@@ -64,7 +78,7 @@ class BotController {
       default:
         return commandUnknown(message);
     }
-  }
+  };
 
   async handleButtChance(message) {
     const server = await servers.getServer(message.guild.id);
@@ -81,13 +95,14 @@ class BotController {
     }
 
     // Do the thing to handle the butt chance here
-    if ((
-      this.client.user.id !== message.author.id
-      || !message.author.bot
-      || config.breakTheFirstRuleOfButtbotics
-    )
-      && whitelist.includes(message.channel.name) && server.lock === 0
-      && Math.random() < config.chanceToButt) {
+    if (
+      (this.client.user.id !== message.author.id ||
+        !message.author.bot ||
+        config.breakTheFirstRuleOfButtbotics) &&
+      whitelist.includes(message.channel.name) &&
+      server.lock === 0 &&
+      Math.random() < config.chanceToButt
+    ) {
       buttify(message.content)
         .then(buttified => {
           message.channel.send(buttified);

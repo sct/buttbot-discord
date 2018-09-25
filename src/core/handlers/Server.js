@@ -46,11 +46,18 @@ class Server {
     if (remove) {
       this.db.update({ _id: this.id }, { $pull: { whitelist: channelName } });
     } else {
-      this.db.update({ _id: this.id }, { $addToSet: { whitelist: channelName } });
+      this.db.update(
+        { _id: this.id },
+        { $addToSet: { whitelist: channelName } }
+      );
     }
 
-    logger.debug(`Updating whitelist with: #${channelName} Removal: ${remove ? 'true' : 'false'}`);
-  }
+    logger.debug(
+      `Updating whitelist with: #${channelName} Removal: ${
+        remove ? 'true' : 'false'
+      }`
+    );
+  };
 
   getRoles = () =>
     new Promise((resolve, reject) => {
@@ -72,13 +79,15 @@ class Server {
       this.db.update({ _id: this.id }, { $addToSet: { roles: role.id } });
     }
 
-    logger.debug(`Updating access with: ${role.name} Removal: ${remove ? 'true' : 'false'}`);
-  }
+    logger.debug(
+      `Updating access with: ${role.name} Removal: ${remove ? 'true' : 'false'}`
+    );
+  };
 
   trackButtification = () => {
     this.db.update({ _id: this.id }, { $inc: { buttifyCount: 1 } });
     stats.trackButtification();
-  }
+  };
 
   getButtifyCount = () =>
     new Promise((resolve, reject) => {
@@ -97,9 +106,9 @@ class Server {
     newSetting[`settings.${name}`] = value;
 
     this.db.update({ _id: this.id }, { $set: newSetting });
-  }
+  };
 
-  getSetting = (name) =>
+  getSetting = name =>
     new Promise((resolve, reject) => {
       this.db.findOne({ _id: this.id }, (err, server) => {
         if (!server) {
@@ -127,7 +136,8 @@ class Server {
 
         const settings = config;
 
-        settings.chanceToButt = server.settings.chanceToButt || config.chanceToButt;
+        settings.chanceToButt =
+          server.settings.chanceToButt || config.chanceToButt;
         settings.buttBuffer = server.settings.buttBuffer || config.buttBuffer;
 
         return resolve(settings);

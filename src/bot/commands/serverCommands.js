@@ -7,9 +7,11 @@ async function verifyPermission(message) {
 
   const { member } = message;
 
-  if (member.id !== message.guild.ownerID
-    && !roles.find(roleId => member.roles.get(roleId))
-    && !member.hasPermissions('MANAGE_GUILD')) {
+  if (
+    member.id !== message.guild.ownerID &&
+    !roles.find(roleId => member.roles.get(roleId)) &&
+    !member.hasPermissions('MANAGE_GUILD')
+  ) {
     message.channel.send('You do not have permission to manage buttification');
     logger.debug('Unauthorized user attempting command access');
     return false;
@@ -23,7 +25,7 @@ export async function commandServerWhitelist(message) {
 
   const whitelist = await server.getWhitelist();
 
-  if (!await verifyPermission(message)) {
+  if (!(await verifyPermission(message))) {
     throw new Error('Permissions check failed');
   }
 
@@ -52,7 +54,7 @@ export async function commandServerAccess(message) {
   const server = await Servers.getServer(message.guild.id);
   const roles = await server.getRoles();
 
-  if (!await verifyPermission(message)) {
+  if (!(await verifyPermission(message))) {
     throw new Error('Permissions check failed');
   }
 
@@ -80,7 +82,7 @@ export async function commandServerAccess(message) {
 export async function commandServerSetting(message, setting, value) {
   const server = await Servers.getServer(message.guild.id);
 
-  if (!await verifyPermission(message)) {
+  if (!(await verifyPermission(message))) {
     throw new Error('Permissions check failed');
   }
 
@@ -91,7 +93,9 @@ export async function commandServerSetting(message, setting, value) {
   const validSettings = ['chanceToButt', 'buttBuffer'];
 
   if (!setting || !validSettings.includes(setting)) {
-    message.channel.send(`Unknown setting. Valid settings are: ${validSettings.join(', ')}`);
+    message.channel.send(
+      `Unknown setting. Valid settings are: ${validSettings.join(', ')}`
+    );
     throw new Error('Unknown setting passed to bot');
   }
 
@@ -106,10 +110,14 @@ export async function commandServerSetting(message, setting, value) {
         throw new Error('Invalid value passed in for chanceToButt');
       }
 
-      message.channel.send(`The setting **${setting}** has been updated to: ${value}`);
+      message.channel.send(
+        `The setting **${setting}** has been updated to: ${value}`
+      );
       return server.setSetting(setting, parseFloat(value, 10));
     default:
-      message.channel.send(`The setting **${setting}** has been updated to: ${value}`);
+      message.channel.send(
+        `The setting **${setting}** has been updated to: ${value}`
+      );
       return server.setSetting(setting, value);
   }
 }

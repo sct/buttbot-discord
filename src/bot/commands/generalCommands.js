@@ -4,8 +4,10 @@ import { version } from '../../../package.json';
 import stats from '../../core/handlers/Stats';
 import servers from '../../core/handlers/Servers';
 
-export const commandUnknown = (message) => {
-  message.channel.send('Sorry! I don\'t know what you want of me! Try **?butt help** or **?butt about**');
+export const commandUnknown = message => {
+  message.channel.send(
+    "Sorry! I don't know what you want of me! Try **?butt help** or **?butt about**"
+  );
 };
 
 export async function commandAbout(message) {
@@ -16,9 +18,11 @@ export async function commandAbout(message) {
 
   const embed = new RichEmbed()
     .setAuthor('ButtBot')
-    .setDescription(`ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
+    .setDescription(
+      `ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
 
-ButtBot Discord currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.`)
+ButtBot Discord currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.`
+    )
     .addField('Help Command', '?butt help')
     .addBlankField()
     .addField('Buttified Servers', message.client.guilds.size, true)
@@ -31,12 +35,20 @@ ButtBot Discord currently pales in comparison to the original buttbots beautiful
   message.channel.send(embed);
 }
 
-export const commandHelp = (message) => {
+export const commandHelp = message => {
   const embed = new RichEmbed()
     .setAuthor('ButtBot Help')
-    .setDescription('The following commands are available to roles with permissions or server owners:')
-    .addField('?butt whitelist #channelname', 'Add or remove a channel from the buttification whitelist. By default, no channels are added.')
-    .addField('?butt access @rolename', 'Add or remove a role from access control to ButtBot.')
+    .setDescription(
+      'The following commands are available to roles with permissions or server owners:'
+    )
+    .addField(
+      '?butt whitelist #channelname',
+      'Add or remove a channel from the buttification whitelist. By default, no channels are added.'
+    )
+    .addField(
+      '?butt access @rolename',
+      'Add or remove a role from access control to ButtBot.'
+    )
     .addField('?butt setting', 'Adjust bot settings for this server.')
     .setFooter('Never forget the firstrule')
     .setColor([212, 228, 32]);
@@ -44,8 +56,10 @@ export const commandHelp = (message) => {
   message.channel.send(embed);
 };
 
-export const commandFirstRule = (message) => {
-  message.reply('remember! Isaac Buttimov\'s First Rule of Buttbotics: Don\'t let buttbot reply to buttbot.');
+export const commandFirstRule = message => {
+  message.reply(
+    "remember! Isaac Buttimov's First Rule of Buttbotics: Don't let buttbot reply to buttbot."
+  );
 };
 
 export async function commandButtifyCount(message) {
@@ -54,7 +68,9 @@ export async function commandButtifyCount(message) {
 
   const serverButtifyCount = await server.getButtifyCount();
 
-  message.channel.send(`I have buttified ${serverButtifyCount} message(s) on this server. Globally, I have already buttified ${buttifyCount} messages!`);
+  message.channel.send(
+    `I have buttified ${serverButtifyCount} message(s) on this server. Globally, I have already buttified ${buttifyCount} messages!`
+  );
 }
 
 export default commandAbout;

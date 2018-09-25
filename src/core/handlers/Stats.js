@@ -7,10 +7,10 @@ class Stats {
 
   trackButtification = () => {
     this.db.update({ _id: 1 }, { $inc: { buttifyCount: 1 } }, { upsert: true });
-  }
+  };
 
   getButtifyCount = () =>
-    new Promise((resolve) => {
+    new Promise(resolve => {
       this.db.findOne({ _id: 1 }, (err, stats) => {
         if (!stats) {
           return resolve(0);

@@ -10,19 +10,22 @@ class Servers {
 
   createServer = serverId =>
     new Promise((resolve, reject) => {
-      this.db.insert({
-        _id: serverId,
-        whitelist: [],
-        roles: [],
-        muted: false,
-        buttifyCount: 0,
-      }, (err, newServer) => {
-        if (newServer) {
-          return resolve(newServer);
-        }
+      this.db.insert(
+        {
+          _id: serverId,
+          whitelist: [],
+          roles: [],
+          muted: false,
+          buttifyCount: 0
+        },
+        (err, newServer) => {
+          if (newServer) {
+            return resolve(newServer);
+          }
 
-        return reject(err);
-      });
+          return reject(err);
+        }
+      );
     });
 
   async getServer(serverId) {
@@ -33,7 +36,8 @@ class Servers {
     const server = new Server(serverId);
 
     if (!server.prepared) {
-      await server.prepareServer()
+      await server
+        .prepareServer()
         .then(preparedServer => logger.debug('Server Prepared', preparedServer))
         .catch(error => logger.error(error));
     }
