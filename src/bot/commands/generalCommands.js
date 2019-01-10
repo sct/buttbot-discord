@@ -27,7 +27,7 @@ ButtBot Discord currently pales in comparison to the original buttbots beautiful
     .addBlankField()
     .addField('Buttified Servers', message.client.guilds.size, true)
     .addField('Global Buttified Messages', buttifyCount, true)
-    .addField('This Servers Buttifications', serverButtifyCount, true)
+    .addField('This Server\'s Buttifications', serverButtifyCount, true)
     .addField('GitHub', 'https://github.com/sct/buttbot-discord')
     .setFooter(`Version: ${version}`)
     .setColor([212, 228, 32]);
