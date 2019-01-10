@@ -90,7 +90,7 @@ export async function commandServerSetting(message, setting, value) {
     throw new Error('Server doesnt exist. How are you even doing this?');
   }
 
-  const validSettings = ['chanceToButt', 'buttBuffer'];
+  const validSettings = ['chanceToButt', 'buttBuffer', 'buttAI'];
 
   if (!setting || !validSettings.includes(setting)) {
     message.channel.send(
@@ -114,6 +114,19 @@ export async function commandServerSetting(message, setting, value) {
         `The setting **${setting}** has been updated to: ${value}`
       );
       return server.setSetting(setting, parseFloat(value, 10));
+    case 'buttAI':
+      if (Number(value) !== 0 && Number(value) !== 1) {
+        message.channel.send(
+          'You must pass in either 1 (enable) or 0 (disable)'
+        );
+        throw new Error('Invalid value passed in for buttAI');
+      }
+
+      message.channel.send(
+        `The setting **${setting}** has been updated to: ${value}`
+      );
+      return server.setSetting(setting, Number(value));
+
     default:
       message.channel.send(
         `The setting **${setting}** has been updated to: ${value}`

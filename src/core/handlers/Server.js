@@ -139,6 +139,7 @@ class Server {
         settings.chanceToButt =
           server.settings.chanceToButt || config.chanceToButt;
         settings.buttBuffer = server.settings.buttBuffer || config.buttBuffer;
+        settings.buttAI = server.settings.buttAI === 0 ? 0 : config.buttAI;
 
         return resolve(settings);
       });

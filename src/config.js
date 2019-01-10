@@ -11,6 +11,7 @@ config.wordsToPossiblyButt =
   parseInt(process.env.BOT_WORDS_TO_POSSIBLY_BUTT, 10) || 3;
 config.chanceToButt = parseFloat(process.env.BOT_CHANCE, 10) || 0.2;
 config.buttBuffer = parseInt(process.env.BOT_BUTT_BUFFER, 10) || 5;
+config.buttAI = 1;
 
 // WARNING
 // IF YOU CHANGE THIS THE POLICE CAN MAYBE TAKE YOU TO JAIL

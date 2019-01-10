@@ -128,6 +128,7 @@ const buttify = string =>
   new Promise((resolve, reject) => {
     const originalString = string;
     const buttdex = [];
+    const buttifiedWords = [];
     let err = null;
 
     // Separate the string into an array
@@ -168,6 +169,12 @@ const buttify = string =>
       if (!buttdex.includes(rndIndex)) {
         split[rndIndex] = subButt(word);
         buttdex.push(rndIndex);
+        if (split[rndIndex] !== word) {
+          buttifiedWords.push({
+            word,
+            buttified: split[rndIndex]
+          });
+        }
       }
     }
     // Replace words and compare to original string. Determine butting
@@ -189,7 +196,7 @@ const buttify = string =>
       return reject(err);
     }
 
-    return resolve(final);
+    return resolve({ result: final, words: buttifiedWords });
   });
 
 export default buttify;
