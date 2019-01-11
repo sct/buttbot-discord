@@ -21,7 +21,10 @@ export async function commandAbout(message) {
     .setDescription(
       `ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
 
-ButtBot Discord currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.`
+ButtBot Discord currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.
+
+Whats the deal with these reactions on every message now? This is a experiemntal new ButtAI system. We are trying to teach the bot to be funnier. You can disable it with ?butt setting buttAI 0
+`
     )
     .addField('Help Command', '?butt help')
     .addBlankField()

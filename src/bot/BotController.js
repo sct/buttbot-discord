@@ -8,13 +8,14 @@ import {
   commandHelp,
   commandButtifyCount
 } from './commands/generalCommands';
-import buttify from '../core/butt';
+import buttify, { shouldWeButt } from '../core/butt';
 import {
   commandServerWhitelist,
   commandServerAccess,
   commandServerSetting
 } from './commands/serverCommands';
 import servers from '../core/handlers/Servers';
+import wordsDb from '../core/handlers/Words';
 
 const BOT_SYMBOL = '?';
 
@@ -103,9 +104,29 @@ class BotController {
       server.lock === 0 &&
       Math.random() < config.chanceToButt
     ) {
-      buttify(message.content)
-        .then(buttified => {
-          message.channel.send(buttified);
+      const availableWords = message.content.trim().split(' ');
+      const wordsButtifiable = availableWords.filter(w => shouldWeButt(w));
+      const wordsWithScores = await wordsDb.getWords(wordsButtifiable);
+      buttify(message.content, wordsWithScores)
+        .then(({ result, words }) => {
+          message.channel.send(result).then(buttMessage => {
+            if (config.buttAI === 1) {
+              const emojiFilter = reaction =>
+                reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
+              buttMessage.react('👍').then(() => buttMessage.react('👎'));
+              buttMessage
+                .awaitReactions(emojiFilter, { time: 1000 * 60 * 10 }) // Only listen for 10 minutes
+                .then(async collected => {
+                  const upbutts = collected.get('👍').count - 1;
+                  const downbutts = collected.get('👎').count - 1;
+                  const score = upbutts - downbutts;
+                  words.forEach(async word => {
+                    wordsDb.updateScore(word, score);
+                  });
+                })
+                .catch(err => logger.error(err));
+            }
+          });
           server.lock = config.buttBuffer;
           server.trackButtification();
         })

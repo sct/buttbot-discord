@@ -47,7 +47,7 @@ function capitalizeFirstLetter(string) {
  * @param  {string} string  Stripped version of the word
  * @return {bool}
  */
-const shouldWeButt = string => {
+export const shouldWeButt = string => {
   // Is the word the same as our meme?
   if (string.toLowerCase() === config.meme) {
     return false;
@@ -124,10 +124,11 @@ const subButt = word => {
   return pS + buttWord + pE;
 };
 
-const buttify = string =>
+const buttify = (string, wordsWithScores) =>
   new Promise((resolve, reject) => {
     const originalString = string;
     const buttdex = [];
+    const buttifiedWords = [];
     let err = null;
 
     // Separate the string into an array
@@ -142,6 +143,14 @@ const buttify = string =>
     }
 
     logger.debug(`Test Hyphenation Result: ${h.hyphenateText(string)}`);
+
+    // ButtAI Version 1.0
+    //
+    // Very advanced buttchine learning. Takes the provided wordsWithScores (if
+    // there are any) and will try to buttify those first before moving on to
+    // doing it by random. If scores are below the negative threshhold, the word.
+    // will be ignored. Ignored words will be also skipped by the randomized butt
+    // system as well.
 
     // Choose words to buttify. Super simple here. Just chance to select random
     // words from the string. Eventually we want to weight them and pick them
@@ -162,12 +171,39 @@ const buttify = string =>
         1;
       x += 1
     ) {
+      let didButt = false;
+      const wordWithScore = wordsWithScores[x];
+
+      if (wordWithScore) {
+        if (wordWithScore.score > config.negativeThreshold) {
+          // Find random occurence of word in sentence
+          let wordLocations = [];
+          for (x = 0; x < split.length; x++) {
+            if (wordWithScore.original === split[x]) {
+              wordLocations.push(x);
+            }
+          }
+
+          const chosenIndex = Math.floor(Math.random() * wordLocations.length);
+          console.log(chosenIndex);
+
+          split[chosenIndex] = wordWithScore.buttified;
+        }
+        didButt = true;
+      }
+
       const rndIndex = Math.floor(Math.random() * split.length);
       const word = split[rndIndex];
 
-      if (!buttdex.includes(rndIndex)) {
+      if (!buttdex.includes(rndIndex) && !didButt) {
         split[rndIndex] = subButt(word);
         buttdex.push(rndIndex);
+        if (split[rndIndex] !== word) {
+          buttifiedWords.push({
+            word,
+            buttified: split[rndIndex]
+          });
+        }
       }
     }
     // Replace words and compare to original string. Determine butting
@@ -189,7 +225,7 @@ const buttify = string =>
       return reject(err);
     }
 
-    return resolve(final);
+    return resolve({ result: final, words: buttifiedWords });
   });
 
 export default buttify;
