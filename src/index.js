@@ -12,6 +12,7 @@ db.words.loadDatabase();
 // Set up interval writes
 const compactionInterval = 1000 * 60 * 60;
 db.servers.persistence.setAutocompactionInterval(compactionInterval);
+db.words.persistence.setAutocompactionInterval(compactionInterval);
 
 // Initialize Bot
 const bot = new BotController();
