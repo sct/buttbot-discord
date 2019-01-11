@@ -8,7 +8,7 @@ import {
   commandHelp,
   commandButtifyCount
 } from './commands/generalCommands';
-import buttify from '../core/butt';
+import buttify, { shouldWeButt } from '../core/butt';
 import {
   commandServerWhitelist,
   commandServerAccess,
@@ -104,7 +104,10 @@ class BotController {
       server.lock === 0 &&
       Math.random() < config.chanceToButt
     ) {
-      buttify(message.content)
+      const availableWords = message.content.trim().split(' ');
+      const wordsButtifiable = availableWords.filter(w => shouldWeButt(w));
+      const wordsWithScores = await wordsDb.getWords(wordsButtifiable);
+      buttify(message.content, wordsWithScores)
         .then(({ result, words }) => {
           message.channel.send(result).then(buttMessage => {
             if (config.buttAI === 1) {

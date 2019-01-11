@@ -6,11 +6,12 @@ const config = {};
 
 config.meme = process.env.BOT_MEME || 'butt';
 config.minimumWordsBeforeButtification =
-  parseInt(process.env.BOT_MINIMUM_BEFORE_BUTTIFY, 10) || 3;
+  Number(process.env.BOT_MINIMUM_BEFORE_BUTTIFY) || 3;
 config.wordsToPossiblyButt =
-  parseInt(process.env.BOT_WORDS_TO_POSSIBLY_BUTT, 10) || 3;
+  Number(process.env.BOT_WORDS_TO_POSSIBLY_BUTT) || 3;
+config.negativeThreshold = Number(process.env.BOT_NEGATIVE_THRESHOLD) || -10;
 config.chanceToButt = parseFloat(process.env.BOT_CHANCE, 10) || 0.2;
-config.buttBuffer = parseInt(process.env.BOT_BUTT_BUFFER, 10) || 5;
+config.buttBuffer = Number(process.env.BOT_BUTT_BUFFER) || 5;
 config.buttAI = 1;
 
 // WARNING

@@ -39,16 +39,13 @@ class Words {
 
   getWords = words =>
     new Promise((resolve, reject) => {
-      this.db.find(
-        { word: { $in: words.map(({ word }) => word) } },
-        (err, fetchedWords) => {
-          if (err) {
-            reject(err);
-          }
-
-          return resolve(fetchedWords);
+      this.db.find({ original: { $in: words } }, (err, fetchedWords) => {
+        if (err) {
+          reject(err);
         }
-      );
+
+        return resolve(fetchedWords.sort((a, b) => b.score - a.score));
+      });
     });
 
   updateScore = async (word, score) => {
