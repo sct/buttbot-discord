@@ -16,6 +16,10 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.1.2
+
+- Do not use words with scores if the score is 0
+
 ### 1.1.1
 
 - Initial ButtAI experimental release

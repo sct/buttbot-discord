@@ -171,24 +171,32 @@ const buttify = (string, wordsWithScores) =>
         1;
       x += 1
     ) {
+      logger.debug(`Attempting buttification #${x + 1}`);
       let didButt = false;
       const wordWithScore = wordsWithScores[x];
 
-      if (wordWithScore) {
-        if (wordWithScore.score > config.negativeThreshold) {
-          // Find random occurence of word in sentence
-          let wordLocations = [];
-          for (x = 0; x < split.length; x++) {
-            if (wordWithScore.original === split[x]) {
-              wordLocations.push(x);
-            }
+      if (wordWithScore && wordWithScore.score <= config.negativeThreshold) {
+        logger.debug('Word below negative threshold. Skipping and blocking.');
+        didButt = true;
+      }
+
+      if (wordWithScore && wordWithScore.score > 0 && !didButt) {
+        logger.debug(
+          `Word exists with score greater than 0, using it! [${
+            wordWithScore.original
+          }]`
+        );
+        // Find random occurence of word in sentence
+        let wordLocations = [];
+        for (x = 0; x < split.length; x++) {
+          if (wordWithScore.original === split[x]) {
+            wordLocations.push(x);
           }
-
-          const chosenIndex = Math.floor(Math.random() * wordLocations.length);
-          console.log(chosenIndex);
-
-          split[chosenIndex] = wordWithScore.buttified;
         }
+
+        const chosenIndex = Math.floor(Math.random() * wordLocations.length);
+
+        split[chosenIndex] = wordWithScore.buttified;
         didButt = true;
       }
 
