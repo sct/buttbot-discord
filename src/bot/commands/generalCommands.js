@@ -27,10 +27,10 @@ Whats the deal with these reactions on every message now? This is a experiemntal
 `
     )
     .addField('Help Command', '?butt help')
-    .addBlankField()
     .addField('Buttified Servers', message.client.guilds.size, true)
     .addField('Global Buttified Messages', buttifyCount, true)
     .addField("This Server's Buttifications", serverButtifyCount, true)
+    .addField('Want ButtBot on your server?', 'https://buttbot.net')
     .addField('GitHub', 'https://github.com/sct/buttbot-discord')
     .setFooter(`Version: ${version}`)
     .setColor([212, 228, 32]);

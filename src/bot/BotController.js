@@ -35,7 +35,7 @@ class BotController {
       logger.info('Connected to Discord');
 
       this.client.user.setPresence({
-        game: { name: '?butt help | ?butt about' }
+        game: { name: 'buttbot.net | ?butt about' }
       });
     });
   };

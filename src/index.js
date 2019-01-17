@@ -1,7 +1,12 @@
 import dotenv from 'dotenv';
-
 import BotController from './bot/BotController';
 import db from './core/db';
+import { version } from '../package.json';
+import stats from './core/handlers/Stats';
+
+const fastify = require('fastify')({
+  logger: true
+});
 
 dotenv.config();
 
@@ -19,3 +24,27 @@ const bot = new BotController();
 
 bot.connect();
 bot.prepare();
+
+// Mini API Butt Server
+
+fastify.get('/', async (req, reply) => {
+  const buttifyCount = await stats.getButtifyCount();
+  const totalServers = bot.client.guilds.size;
+  return {
+    name: 'Buttbot Mini Stats API',
+    version,
+    buttifyCount,
+    totalServers
+  };
+});
+
+const start = async () => {
+  try {
+    await fastify.listen(process.env.API_PORT || 3000);
+    fastify.log.info(`server listening on ${fastify.server.address().port}`);
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+start();
