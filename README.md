@@ -1,6 +1,6 @@
 # ButtBot Discord (A Discord ButtBot)
 
-⚠️ **Buttbot now has a fancy website!** https://buttbott.net
+⚠️ **Buttbot now has a fancy website!** https://buttbot.net
 
 ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
 
