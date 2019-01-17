@@ -1,12 +1,9 @@
 import dotenv from 'dotenv';
+import cors from 'cors';
 import BotController from './bot/BotController';
 import db from './core/db';
 import { version } from '../package.json';
 import stats from './core/handlers/Stats';
-
-const fastify = require('fastify')({
-  logger: true
-});
 
 dotenv.config();
 
@@ -26,6 +23,15 @@ bot.connect();
 bot.prepare();
 
 // Mini API Butt Server
+
+const fastify = require('fastify')({
+  logger: true
+});
+
+fastify.use(cors());
+fastify.options('*', (req, reply) => {
+  reply.send();
+});
 
 fastify.get('/', async (req, reply) => {
   const buttifyCount = await stats.getButtifyCount();
