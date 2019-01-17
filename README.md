@@ -1,5 +1,7 @@
 # ButtBot Discord (A Discord ButtBot)
 
+⚠️ **Buttbot now has a fancy website!** https://buttbott.net
+
 ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
 
 ButtBot Discord currently pales in comparison to the original buttbots beautiful and intelligent architecture but still tends to create the same amount of laughs.
@@ -15,6 +17,10 @@ If you want to add ButtBot to your server I am hosting the latest version at all
 I cannot promise this will always be working as intended but I will do my best. If you run into issues you can join the ButtBot discord server [by clicking here](https://discord.gg/uqSuumF).
 
 ## Changelog
+
+### 1.1.3
+
+- Added mini api server to allow querying for bot stats
 
 ### 1.1.2
 
