@@ -33,7 +33,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "cors": "^2.8.5",
     "discord.js": "^11.4.2",
-    "dotenv": "^5.0.1",
+    "dotenv": "^6.0.0",
     "fastify": "^1.13.4",
     "hyphenation.en-us": "^0.2.1",
     "hypher": "^0.2.5",
