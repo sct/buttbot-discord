@@ -12,7 +12,7 @@
   "author": "sct",
   "license": "MIT",
   "devDependencies": {
-    "babel-eslint": "8.2.6",
+    "babel-eslint": "10.0.1",
     "eslint": "5.13.0",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-config-prettier": "4.0.0",
