@@ -1,5 +1,5 @@
-import winston from 'winston';
-import dotenv from 'dotenv';
+import * as winston from 'winston';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 

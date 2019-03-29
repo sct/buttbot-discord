@@ -1,9 +1,8 @@
-import fs from 'fs';
+import { readFileSync } from 'fs';
 
 import logger from './logger';
 
-const stopwords = fs
-  .readFileSync('./src/lib/stopwords')
+const stopwords = readFileSync('./src/lib/stopwords')
   .toString()
   .split(/\r\n?|\n/);
 logger.debug('Loaded stopwords');

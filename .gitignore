@@ -65,3 +65,6 @@ authcache.json
 
 # Database files
 db/
+
+# Typescript compiled
+dist/

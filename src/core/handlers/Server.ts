@@ -3,19 +3,31 @@ import db from '../db';
 import Servers from './Servers';
 import logger from '../logger';
 import stats from './Stats';
-import config from '../../config';
+import config, { ButtBotConfig } from '../../config';
+import { Role } from 'discord.js';
+
+export type ServerType = {
+  _id: string;
+  whitelist: string[];
+  roles: string[];
+  muted: boolean;
+  buttifyCount: number;
+  settings: ButtBotConfig
+}
 
 class Server {
-  constructor(serverId) {
+  id: string;
+  db = db.servers;
+  prepared: boolean = false;
+  lock: number = 0;
+
+  constructor(serverId: string) {
     this.id = serverId;
-    this.db = db.servers;
-    this.prepared = false;
-    this.lock = 0;
   }
 
-  async prepareServer() {
+  async prepareServer(): Promise<ServerType> {
     return new Promise((resolve, reject) => {
-      this.db.findOne({ _id: this.id }, (err, server) => {
+      this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           Servers.createServer(this.id)
             .then(newServer => {
@@ -31,9 +43,9 @@ class Server {
     });
   }
 
-  getWhitelist = () =>
+  getWhitelist = (): Promise<string[]> =>
     new Promise((resolve, reject) => {
-      this.db.findOne({ _id: this.id }, (err, server) => {
+      this.db.findOne({ _id: this.id }, (err: Error, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
         }
@@ -42,7 +54,7 @@ class Server {
       });
     });
 
-  updateWhitelist = (channelName, remove) => {
+  updateWhitelist = (channelName: string, remove: boolean): void => {
     if (remove) {
       this.db.update({ _id: this.id }, { $pull: { whitelist: channelName } });
     } else {
@@ -59,9 +71,9 @@ class Server {
     );
   };
 
-  getRoles = () =>
+  getRoles = (): Promise<string[]> =>
     new Promise((resolve, reject) => {
-      this.db.findOne({ _id: this.id }, (err, server) => {
+      this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
         }
@@ -72,7 +84,7 @@ class Server {
       });
     });
 
-  updateRoles = (role, remove) => {
+  updateRoles = (role: Role, remove: boolean): void => {
     if (remove) {
       this.db.update({ _id: this.id }, { $pull: { roles: role.id } });
     } else {
@@ -84,14 +96,14 @@ class Server {
     );
   };
 
-  trackButtification = () => {
+  trackButtification = (): void => {
     this.db.update({ _id: this.id }, { $inc: { buttifyCount: 1 } });
     stats.trackButtification();
   };
 
-  getButtifyCount = () =>
+  getButtifyCount = (): Promise<number> =>
     new Promise((resolve, reject) => {
-      this.db.findOne({ _id: this.id }, (err, server) => {
+      this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
         }
@@ -100,7 +112,7 @@ class Server {
       });
     });
 
-  setSetting = (name, value) => {
+  setSetting = (name: string, value: any): void => {
     const newSetting = {};
 
     newSetting[`settings.${name}`] = value;
@@ -108,9 +120,9 @@ class Server {
     this.db.update({ _id: this.id }, { $set: newSetting });
   };
 
-  getSetting = name =>
+  getSetting = (name: string) =>
     new Promise((resolve, reject) => {
-      this.db.findOne({ _id: this.id }, (err, server) => {
+      this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
         }
@@ -123,9 +135,9 @@ class Server {
       });
     });
 
-  getSettings = () =>
+  getSettings = (): Promise<ButtBotConfig> =>
     new Promise((resolve, reject) => {
-      this.db.findOne({ _id: this.id }, (err, server) => {
+      this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
         }
