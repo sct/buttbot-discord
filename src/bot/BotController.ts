@@ -115,7 +115,7 @@ class BotController {
                 reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
               buttMessage.react('👍').then(() => buttMessage.react('👎'));
               buttMessage
-                .awaitReactions(emojiFilter, { time: 1000 * 5 }) // Only listen for 10 minutes
+                .awaitReactions(emojiFilter, { time: 1000 * 60 * 10 }) // Only listen for 10 minutes
                 .then(async collected => {
                   const upbutts = collected.get('👍').count - 1;
                   const downbutts = collected.get('👎').count - 1;
