@@ -1,14 +1,12 @@
-import Server from './Server';
+import Server, { ServerType } from './Server';
 import db from '../db';
 import logger from '../logger';
 
 class Servers {
-  constructor() {
-    this.db = db.servers;
-    this.servers = {};
-  }
+  db = db.servers;
+  servers = {};
 
-  createServer = serverId =>
+  createServer = (serverId: string): Promise<ServerType> =>
     new Promise((resolve, reject) => {
       this.db.insert(
         {
@@ -16,9 +14,9 @@ class Servers {
           whitelist: [],
           roles: [],
           muted: false,
-          buttifyCount: 0
+          buttifyCount: 0,
         },
-        (err, newServer) => {
+        (err, newServer: ServerType) => {
           if (newServer) {
             return resolve(newServer);
           }
@@ -28,7 +26,7 @@ class Servers {
       );
     });
 
-  async getServer(serverId) {
+  async getServer(serverId: string): Promise<Server> {
     if (this.servers[serverId]) {
       return this.servers[serverId];
     }

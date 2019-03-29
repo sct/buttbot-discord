@@ -105,7 +105,7 @@ export async function commandServerSetting(message, setting, value) {
 
   switch (setting) {
     case 'chanceToButt':
-      if (parseFloat(value, 10) < 0 || parseFloat(value, 10) > 1) {
+      if (parseFloat(value) < 0 || parseFloat(value) > 1) {
         message.channel.send('You must pass in a value between 0 and 1');
         throw new Error('Invalid value passed in for chanceToButt');
       }
@@ -113,7 +113,7 @@ export async function commandServerSetting(message, setting, value) {
       message.channel.send(
         `The setting **${setting}** has been updated to: ${value}`
       );
-      return server.setSetting(setting, parseFloat(value, 10));
+      return server.setSetting(setting, parseFloat(value));
     case 'buttAI':
       if (Number(value) !== 0 && Number(value) !== 1) {
         message.channel.send(

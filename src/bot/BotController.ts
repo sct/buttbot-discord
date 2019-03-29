@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import Discord, { TextChannel } from 'discord.js';
 
 import logger from '../core/logger';
 import {
@@ -20,9 +20,7 @@ import wordsDb from '../core/handlers/Words';
 const BOT_SYMBOL = '?';
 
 class BotController {
-  constructor() {
-    this.client = new Discord.Client();
-  }
+  client = new Discord.Client();
 
   connect = () => {
     this.client.login(process.env.DISCORD_BOT_TOKEN);
@@ -54,7 +52,7 @@ class BotController {
     });
   };
 
-  handleCommand = message => {
+  handleCommand = (message: Discord.Message) => {
     const command = message.content
       .replace(`${BOT_SYMBOL}butt `, '')
       .split(' ');
@@ -81,7 +79,7 @@ class BotController {
     }
   };
 
-  async handleButtChance(message) {
+  async handleButtChance(message: Discord.Message) {
     const server = await servers.getServer(message.guild.id);
 
     const whitelist = await server.getWhitelist();
@@ -95,12 +93,14 @@ class BotController {
       server.lock -= 1;
     }
 
+    const messageChannel = message.channel as TextChannel;
+
     // Do the thing to handle the butt chance here
     if (
       (this.client.user.id !== message.author.id ||
         !message.author.bot ||
         config.breakTheFirstRuleOfButtbotics) &&
-      whitelist.includes(message.channel.name) &&
+      whitelist.includes(messageChannel.name) &&
       server.lock === 0 &&
       Math.random() < config.chanceToButt
     ) {
@@ -109,13 +109,13 @@ class BotController {
       const wordsWithScores = await wordsDb.getWords(wordsButtifiable);
       buttify(message.content, wordsWithScores)
         .then(({ result, words }) => {
-          message.channel.send(result).then(buttMessage => {
+          message.channel.send(result).then((buttMessage: Discord.Message) => {
             if (config.buttAI === 1) {
               const emojiFilter = reaction =>
                 reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
               buttMessage.react('👍').then(() => buttMessage.react('👎'));
               buttMessage
-                .awaitReactions(emojiFilter, { time: 1000 * 60 * 10 }) // Only listen for 10 minutes
+                .awaitReactions(emojiFilter, { time: 1000 * 5 }) // Only listen for 10 minutes
                 .then(async collected => {
                   const upbutts = collected.get('👍').count - 1;
                   const downbutts = collected.get('👎').count - 1;
