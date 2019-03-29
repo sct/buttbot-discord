@@ -18,6 +18,11 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.2.0
+
+- Converted the project to Typescript
+- Fixed issue where the bot would often choose the first word and ignore normal replacement rules
+
 ### 1.1.3
 
 - Added mini api server to allow querying for bot stats
