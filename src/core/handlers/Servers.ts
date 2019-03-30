@@ -3,10 +3,10 @@ import db from '../db';
 import logger from '../logger';
 
 class Servers {
-  db = db.servers;
-  servers = {};
+  private db = db.servers;
+  private servers = {};
 
-  createServer = (serverId: string): Promise<ServerType> =>
+  public createServer = (serverId: string): Promise<ServerType> =>
     new Promise((resolve, reject) => {
       this.db.insert(
         {
@@ -26,7 +26,7 @@ class Servers {
       );
     });
 
-  async getServer(serverId: string): Promise<Server> {
+  public async getServer(serverId: string): Promise<Server> {
     if (this.servers[serverId]) {
       return this.servers[serverId];
     }

@@ -1,16 +1,16 @@
-import { RichEmbed } from 'discord.js';
+import { RichEmbed, Message } from 'discord.js';
 
 import { version } from '../../../package.json';
 import stats from '../../core/handlers/Stats';
 import servers from '../../core/handlers/Servers';
 
-export const commandUnknown = message => {
+export const commandUnknown = (message: Message): void => {
   message.channel.send(
     "Sorry! I don't know what you want of me! Try **?butt help** or **?butt about**"
   );
 };
 
-export async function commandAbout(message) {
+export const commandAbout = async (message: Message): Promise<void> => {
   const buttifyCount = await stats.getButtifyCount();
   const server = await servers.getServer(message.guild.id);
 
@@ -36,9 +36,9 @@ Whats the deal with these reactions on every message now? This is a experiemntal
     .setColor([212, 228, 32]);
 
   message.channel.send(embed);
-}
+};
 
-export const commandHelp = message => {
+export const commandHelp = (message: Message): void => {
   const embed = new RichEmbed()
     .setAuthor('ButtBot Help')
     .setDescription(
@@ -59,13 +59,13 @@ export const commandHelp = message => {
   message.channel.send(embed);
 };
 
-export const commandFirstRule = message => {
+export const commandFirstRule = (message: Message): void => {
   message.reply(
     "remember! Isaac Buttimov's First Rule of Buttbotics: Don't let buttbot reply to buttbot."
   );
 };
 
-export async function commandButtifyCount(message) {
+export const commandButtifyCount = async (message: Message): Promise<void> => {
   const buttifyCount = await stats.getButtifyCount();
   const server = await servers.getServer(message.guild.id);
 
@@ -74,6 +74,6 @@ export async function commandButtifyCount(message) {
   message.channel.send(
     `I have buttified ${serverButtifyCount} message(s) on this server. Globally, I have already buttified ${buttifyCount} messages!`
   );
-}
+};
 
 export default commandAbout;

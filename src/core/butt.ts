@@ -125,7 +125,10 @@ const subButt = (word: string): string => {
   return pS + buttWord + pE;
 };
 
-const buttify = (string: string, wordsWithScores: WordType[]) =>
+const buttify = (
+  string: string,
+  wordsWithScores: WordType[]
+): Promise<{ result: string; words: { word: string; buttified: string }[] }> =>
   new Promise((resolve, reject) => {
     const originalString = string;
     const buttdex = [];

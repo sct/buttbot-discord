@@ -1,8 +1,8 @@
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-export type ButtBotConfig = {
+export interface ButtBotConfig {
   meme: string;
   minimumWordsBeforeButtification: number;
   wordsToPossiblyButt: number;
@@ -11,7 +11,7 @@ export type ButtBotConfig = {
   buttBuffer: number;
   buttAI: 0 | 1;
   breakTheFirstRuleOfButtbotics: boolean;
-};
+}
 
 const config: ButtBotConfig = {
   meme: process.env.BOT_MEME || 'butt',

@@ -1,13 +1,13 @@
 import db from '../db';
 
 class Stats {
-  db = db.servers;
+  private db = db.servers;
 
-  trackButtification = () => {
+  public trackButtification = () => {
     this.db.update({ _id: 1 }, { $inc: { buttifyCount: 1 } }, { upsert: true });
   };
 
-  getButtifyCount = (): Promise<number> =>
+  public getButtifyCount = (): Promise<number> =>
     new Promise(resolve => {
       this.db.findOne({ _id: 1 }, (err, stats: { buttifyCount: number }) => {
         if (!stats) {

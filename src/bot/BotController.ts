@@ -1,4 +1,4 @@
-import Discord, { TextChannel } from 'discord.js';
+import Discord, { TextChannel, MessageReaction } from 'discord.js';
 
 import logger from '../core/logger';
 import {
@@ -111,7 +111,7 @@ class BotController {
         .then(({ result, words }) => {
           message.channel.send(result).then((buttMessage: Discord.Message) => {
             if (config.buttAI === 1) {
-              const emojiFilter = reaction =>
+              const emojiFilter = (reaction: MessageReaction) =>
                 reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
               buttMessage.react('👍').then(() => buttMessage.react('👎'));
               buttMessage
