@@ -9,7 +9,7 @@
     "debug": "nodemon -e ts -x ts-node --inspect src/index.ts",
     "build": "rimraf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint \"**/*.{js,ts}\" --ignore-path .gitignore"
+    "lint": "eslint \"src/**/*.{js,ts}\" --ignore-path .gitignore"
   },
   "author": "sct",
   "license": "MIT",
