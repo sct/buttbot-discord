@@ -25,7 +25,7 @@ bot.prepare();
 // Mini API Butt Server
 
 const fastify = require('fastify')({
-  logger: true
+  logger: true,
 });
 
 fastify.use(cors());
@@ -33,18 +33,18 @@ fastify.options('*', (req, reply) => {
   reply.send();
 });
 
-fastify.get('/', async (req, reply) => {
+fastify.get('/', async () => {
   const buttifyCount = await stats.getButtifyCount();
   const totalServers = bot.client.guilds.size;
   return {
     name: 'Buttbot Mini Stats API',
     version,
     buttifyCount,
-    totalServers
+    totalServers,
   };
 });
 
-const start = async () => {
+const start = async (): Promise<void> => {
   try {
     await fastify.listen(process.env.API_PORT || 3000);
     fastify.log.info(`server listening on ${fastify.server.address().port}`);

@@ -6,26 +6,26 @@ import stats from './Stats';
 import config, { ButtBotConfig } from '../../config';
 import { Role } from 'discord.js';
 
-export type ServerType = {
+export interface ServerType {
   _id: string;
   whitelist: string[];
   roles: string[];
   muted: boolean;
   buttifyCount: number;
-  settings: ButtBotConfig
+  settings: ButtBotConfig;
 }
 
 class Server {
-  id: string;
-  db = db.servers;
-  prepared: boolean = false;
-  lock: number = 0;
+  private db = db.servers;
+  public id: string;
+  public prepared: boolean = false;
+  public lock: number = 0;
 
-  constructor(serverId: string) {
+  public constructor(serverId: string) {
     this.id = serverId;
   }
 
-  async prepareServer(): Promise<ServerType> {
+  public async prepareServer(): Promise<ServerType> {
     return new Promise((resolve, reject) => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
@@ -43,7 +43,7 @@ class Server {
     });
   }
 
-  getWhitelist = (): Promise<string[]> =>
+  public getWhitelist = (): Promise<string[]> =>
     new Promise((resolve, reject) => {
       this.db.findOne({ _id: this.id }, (err: Error, server: ServerType) => {
         if (!server) {
@@ -54,7 +54,7 @@ class Server {
       });
     });
 
-  updateWhitelist = (channelName: string, remove: boolean): void => {
+  public updateWhitelist = (channelName: string, remove: boolean): void => {
     if (remove) {
       this.db.update({ _id: this.id }, { $pull: { whitelist: channelName } });
     } else {
@@ -71,7 +71,7 @@ class Server {
     );
   };
 
-  getRoles = (): Promise<string[]> =>
+  public getRoles = (): Promise<string[]> =>
     new Promise((resolve, reject) => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
@@ -84,7 +84,7 @@ class Server {
       });
     });
 
-  updateRoles = (role: Role, remove: boolean): void => {
+  public updateRoles = (role: Role, remove: boolean): void => {
     if (remove) {
       this.db.update({ _id: this.id }, { $pull: { roles: role.id } });
     } else {
@@ -96,12 +96,12 @@ class Server {
     );
   };
 
-  trackButtification = (): void => {
+  public trackButtification = (): void => {
     this.db.update({ _id: this.id }, { $inc: { buttifyCount: 1 } });
     stats.trackButtification();
   };
 
-  getButtifyCount = (): Promise<number> =>
+  public getButtifyCount = (): Promise<number> =>
     new Promise((resolve, reject) => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
@@ -112,7 +112,7 @@ class Server {
       });
     });
 
-  setSetting = (name: string, value: any): void => {
+  public setSetting = (name: string, value: string | number): void => {
     const newSetting = {};
 
     newSetting[`settings.${name}`] = value;
@@ -120,7 +120,7 @@ class Server {
     this.db.update({ _id: this.id }, { $set: newSetting });
   };
 
-  getSetting = (name: string) =>
+  public getSetting = (name: string) =>
     new Promise((resolve, reject) => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
@@ -135,7 +135,7 @@ class Server {
       });
     });
 
-  getSettings = (): Promise<ButtBotConfig> =>
+  public getSettings = (): Promise<ButtBotConfig> =>
     new Promise((resolve, reject) => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
