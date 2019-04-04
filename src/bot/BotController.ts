@@ -123,6 +123,14 @@ class BotController {
                   words.forEach(async word => {
                     wordsDb.updateScore(word, score);
                   });
+                  // When the time runs out, we will clear reactions and
+                  // react with the winning vote and a lock
+                  await buttMessage.react('🔒');
+                  if (upbutts >= downbutts) {
+                    await buttMessage.react('🎉');
+                  } else {
+                    await buttMessage.react('😭');
+                  }
                 })
                 .catch(err => logger.error(err));
             }
