@@ -15,7 +15,7 @@ const h = new Hypher(english);
  * @param  {string} string String input
  * @return {array} Ready to buttify
  */
-const prepareForButtification = (string: string): Array<string> => {
+const prepareForButtification = (string: string): string[] => {
   const trimmed = string.trim();
   const split = trimmed.split(' ');
 
@@ -28,7 +28,7 @@ const prepareForButtification = (string: string): Array<string> => {
  * @param  {Array} split Array of updated string
  * @return {string}
  */
-function finishButtification(split: Array<string>): string {
+function finishButtification(split: string[]): string {
   return split.join(' ');
 }
 
@@ -125,7 +125,10 @@ const subButt = (word: string): string => {
   return pS + buttWord + pE;
 };
 
-const buttify = (string: string, wordsWithScores: WordType[]) =>
+const buttify = (
+  string: string,
+  wordsWithScores: WordType[]
+): Promise<{ result: string; words: { word: string; buttified: string }[] }> =>
   new Promise((resolve, reject) => {
     const originalString = string;
     const buttdex = [];

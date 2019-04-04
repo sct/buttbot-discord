@@ -1,7 +1,8 @@
 import Servers from '../../core/handlers/Servers';
 import logger from '../../core/logger';
+import { Message } from 'discord.js';
 
-async function verifyPermission(message) {
+const verifyPermission = async (message: Message): Promise<boolean> => {
   const server = await Servers.getServer(message.guild.id);
   const roles = await server.getRoles();
 
@@ -9,7 +10,7 @@ async function verifyPermission(message) {
 
   if (
     member.id !== message.guild.ownerID &&
-    !roles.find(roleId => member.roles.get(roleId)) &&
+    !roles.find(roleId => !!member.roles.get(roleId)) &&
     !member.hasPermissions('MANAGE_GUILD')
   ) {
     message.channel.send('You do not have permission to manage buttification');
@@ -18,9 +19,11 @@ async function verifyPermission(message) {
   }
 
   return true;
-}
+};
 
-export async function commandServerWhitelist(message) {
+export const commandServerWhitelist = async (
+  message: Message
+): Promise<Message | Message[]> => {
   const server = await Servers.getServer(message.guild.id);
 
   const whitelist = await server.getWhitelist();
@@ -48,9 +51,11 @@ export async function commandServerWhitelist(message) {
   }
 
   return message.channel.send(`Adding #${channel.name} to whitelist`);
-}
+};
 
-export async function commandServerAccess(message) {
+export const commandServerAccess = async (
+  message: Message
+): Promise<Message | Message[]> => {
   const server = await Servers.getServer(message.guild.id);
   const roles = await server.getRoles();
 
@@ -77,9 +82,13 @@ export async function commandServerAccess(message) {
   }
 
   return message.channel.send(`Adding ${role.name} to ButtBot access`);
-}
+};
 
-export async function commandServerSetting(message, setting, value) {
+export const commandServerSetting = async (
+  message: Message,
+  setting: string,
+  value: string
+): Promise<void> => {
   const server = await Servers.getServer(message.guild.id);
 
   if (!(await verifyPermission(message))) {
@@ -133,6 +142,6 @@ export async function commandServerSetting(message, setting, value) {
       );
       return server.setSetting(setting, value);
   }
-}
+};
 
 export default commandServerWhitelist;

@@ -1,4 +1,4 @@
-import Discord, { TextChannel } from 'discord.js';
+import Discord, { TextChannel, MessageReaction } from 'discord.js';
 
 import logger from '../core/logger';
 import {
@@ -6,13 +6,13 @@ import {
   commandFirstRule,
   commandUnknown,
   commandHelp,
-  commandButtifyCount
+  commandButtifyCount,
 } from './commands/generalCommands';
 import buttify, { shouldWeButt } from '../core/butt';
 import {
   commandServerWhitelist,
   commandServerAccess,
-  commandServerSetting
+  commandServerSetting,
 } from './commands/serverCommands';
 import servers from '../core/handlers/Servers';
 import wordsDb from '../core/handlers/Words';
@@ -20,9 +20,9 @@ import wordsDb from '../core/handlers/Words';
 const BOT_SYMBOL = '?';
 
 class BotController {
-  client = new Discord.Client();
+  public client = new Discord.Client();
 
-  connect = () => {
+  public connect = () => {
     this.client.login(process.env.DISCORD_BOT_TOKEN);
 
     this.client.on('ready', () => {
@@ -33,16 +33,16 @@ class BotController {
       logger.info('Connected to Discord');
 
       this.client.user.setPresence({
-        game: { name: 'buttbot.net | ?butt about' }
+        game: { name: 'buttbot.net | ?butt about' },
       });
     });
   };
 
-  prepare = () => {
+  public prepare = () => {
     this.loadListeners();
   };
 
-  loadListeners = () => {
+  private loadListeners = () => {
     this.client.on('message', message => {
       if (message.content.match(/^\?butt(.*)/)) {
         this.handleCommand(message);
@@ -52,7 +52,7 @@ class BotController {
     });
   };
 
-  handleCommand = (message: Discord.Message) => {
+  public handleCommand = (message: Discord.Message) => {
     const command = message.content
       .replace(`${BOT_SYMBOL}butt `, '')
       .split(' ');
@@ -79,7 +79,7 @@ class BotController {
     }
   };
 
-  async handleButtChance(message: Discord.Message) {
+  public async handleButtChance(message: Discord.Message): Promise<void> {
     const server = await servers.getServer(message.guild.id);
 
     const whitelist = await server.getWhitelist();
@@ -111,7 +111,7 @@ class BotController {
         .then(({ result, words }) => {
           message.channel.send(result).then((buttMessage: Discord.Message) => {
             if (config.buttAI === 1) {
-              const emojiFilter = reaction =>
+              const emojiFilter = (reaction: MessageReaction): boolean =>
                 reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
               buttMessage.react('👍').then(() => buttMessage.react('👎'));
               buttMessage
@@ -123,6 +123,14 @@ class BotController {
                   words.forEach(async word => {
                     wordsDb.updateScore(word, score);
                   });
+                  // When the time runs out, we will clear reactions and
+                  // react with the winning vote and a lock
+                  await buttMessage.react('🔒');
+                  if (upbutts >= downbutts) {
+                    await buttMessage.react('🎉');
+                  } else {
+                    await buttMessage.react('😭');
+                  }
                 })
                 .catch(err => logger.error(err));
             }

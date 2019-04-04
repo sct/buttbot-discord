@@ -1,16 +1,16 @@
 import db from '../db';
 
-export type WordType = {
+export interface WordType {
   _id: string;
   original: string;
   buttified: string;
   score: number;
-};
+}
 
 class Words {
-  db = db.words;
+  private db = db.words;
 
-  createWord = (word: string, buttified: string): Promise<WordType> =>
+  public createWord = (word: string, buttified: string): Promise<WordType> =>
     new Promise((resolve, reject) => {
       this.db.insert(
         {
@@ -29,7 +29,7 @@ class Words {
       );
     });
 
-  getWord = ({ word, buttified }): Promise<WordType> =>
+  public getWord = ({ word, buttified }): Promise<WordType> =>
     new Promise(resolve => {
       this.db.findOne({ _id: word }, async (err, fetchedWord: WordType) => {
         if (!fetchedWord) {
@@ -41,7 +41,7 @@ class Words {
       });
     });
 
-  getWords = (words: string[]): Promise<WordType[]> =>
+  public getWords = (words: string[]): Promise<WordType[]> =>
     new Promise((resolve, reject) => {
       this.db.find(
         { original: { $in: words } },
@@ -55,7 +55,7 @@ class Words {
       );
     });
 
-  updateScore = async (
+  public updateScore = async (
     word: { word: string; buttified: string },
     score: number
   ): Promise<void> => {
