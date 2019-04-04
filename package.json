@@ -21,7 +21,7 @@
     "@typescript-eslint/eslint-plugin": "1.5.0",
     "@typescript-eslint/parser": "1.5.0",
     "babel-eslint": "8.2.6",
-    "eslint": "4.19.1",
+    "eslint": "5.16.0",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-config-prettier": "3.6.0",
     "eslint-plugin-import": "2.16.0",
