@@ -36,6 +36,10 @@ class BotController {
         game: { name: 'buttbot.net | ?butt about' },
       });
     });
+
+    this.client.on('error', error => {
+      logger.error(`An error was thrown! MessagE: ${error.message}`);
+    });
   };
 
   public prepare = () => {
