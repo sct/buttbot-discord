@@ -38,7 +38,7 @@ class BotController {
     });
 
     this.client.on('error', error => {
-      logger.error(`An error was thrown! MessagE: ${error.message}`);
+      logger.error(`Something went wrong. Reason: ${error.message}`);
     });
   };
 
