@@ -18,6 +18,10 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.2.2
+
+- Fixes an issue where ButtBot crashes if any error is thrown from the Discord client
+
 ### 1.2.1
 
 - Make it clear that voting on a message has ended. The bot will now add a lock emoji after voting ends.
