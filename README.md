@@ -18,6 +18,10 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.2.3
+
+- Adjusted default butt chance to 5% and default butt buffer to 10 messages
+
 ### 1.2.2
 
 - Fixes an issue where ButtBot crashes if any error is thrown from the Discord client
