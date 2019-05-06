@@ -9,7 +9,9 @@
     "debug": "nodemon -e ts -x ts-node --inspect src/index.ts",
     "build": "rimraf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint \"src/**/*.{js,ts}\" --ignore-path .gitignore"
+    "lint": "eslint \"src/**/*.{js,ts}\" --ignore-path .gitignore",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "sct",
   "license": "MIT",
@@ -43,7 +45,8 @@
     "hypher": "^0.2.5",
     "nedb": "^1.8.0",
     "valid-url": "^1.0.9",
-    "winston": "^3.0.0-rc1"
+    "winston": "^3.0.0-rc1",
+    "snyk": "^1.161.1"
   },
   "prettier": {
     "singleQuote": true,
@@ -59,5 +62,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "snyk": true
 }
