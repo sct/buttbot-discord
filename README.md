@@ -18,6 +18,11 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.3.0
+
+- Buttbot now supports plurals (finally). If the word was originally plural, it will be converted back to a plural after buttification. (This doesn't work with edge case plurals because once it's converted the plural support no longer works)
+- Buttbot no longer buttifies the configured meme (butt) when it is plural.
+
 ### 1.2.3
 
 - Adjusted default butt chance to 5% and default butt buffer to 10 messages
