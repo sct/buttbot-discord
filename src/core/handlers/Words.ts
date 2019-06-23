@@ -11,7 +11,7 @@ class Words {
   private db = db.words;
 
   public createWord = (word: string, buttified: string): Promise<WordType> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject): void => {
       this.db.insert(
         {
           _id: word,
@@ -19,7 +19,7 @@ class Words {
           buttified,
           score: 0,
         },
-        (err, newWord: WordType) => {
+        (err, newWord: WordType): void => {
           if (newWord) {
             return resolve(newWord);
           }
