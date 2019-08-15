@@ -29,20 +29,28 @@ const fastify = require('fastify')({
 });
 
 fastify.use(cors());
-fastify.options('*', (req, reply) => {
+fastify.options('*', (req, reply): void => {
   reply.send();
 });
 
-fastify.get('/', async () => {
-  const buttifyCount = await stats.getButtifyCount();
-  const totalServers = bot.client.guilds.size;
-  return {
-    name: 'Buttbot Mini Stats API',
-    version,
-    buttifyCount,
-    totalServers,
-  };
-});
+fastify.get(
+  '/',
+  async (): Promise<{
+    name: string;
+    version: string;
+    buttifyCount: number;
+    totalServers: number;
+  }> => {
+    const buttifyCount = await stats.getButtifyCount();
+    const totalServers = bot.client.guilds.size;
+    return {
+      name: 'Buttbot Mini Stats API',
+      version,
+      buttifyCount,
+      totalServers,
+    };
+  }
+);
 
 const start = async (): Promise<void> => {
   try {
