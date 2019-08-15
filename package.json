@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/cors": "2.8.5",
-    "@types/dotenv": "6.1.0",
+    "@types/dotenv": "6.1.1",
     "@types/nedb": "1.8.8",
     "@types/pluralize": "0.0.29",
     "@types/valid-url": "1.0.2",
