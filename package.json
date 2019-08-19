@@ -14,7 +14,7 @@
   "author": "sct",
   "license": "MIT",
   "devDependencies": {
-    "@types/cors": "2.8.5",
+    "@types/cors": "2.8.6",
     "@types/dotenv": "6.1.1",
     "@types/nedb": "1.8.8",
     "@types/pluralize": "0.0.29",
