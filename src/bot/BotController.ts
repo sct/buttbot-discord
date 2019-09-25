@@ -19,10 +19,21 @@ import wordsDb from '../core/handlers/Words';
 
 const BOT_SYMBOL = '?';
 
+type CommandReturnTypes = ReturnType<
+  | typeof commandAbout
+  | typeof commandHelp
+  | typeof commandFirstRule
+  | typeof commandButtifyCount
+  | typeof commandServerWhitelist
+  | typeof commandServerAccess
+  | typeof commandServerSetting
+  | typeof commandUnknown
+>;
+
 class BotController {
   public client = new Discord.Client();
 
-  public connect = () => {
+  public connect = (): void => {
     this.client.login(process.env.DISCORD_BOT_TOKEN);
 
     this.client.on('ready', () => {
@@ -42,11 +53,11 @@ class BotController {
     });
   };
 
-  public prepare = () => {
+  public prepare = (): void => {
     this.loadListeners();
   };
 
-  private loadListeners = () => {
+  private loadListeners = (): void => {
     this.client.on('message', message => {
       if (message.content.match(/^\?butt(.*)/)) {
         this.handleCommand(message);
@@ -56,7 +67,7 @@ class BotController {
     });
   };
 
-  public handleCommand = (message: Discord.Message) => {
+  public handleCommand = (message: Discord.Message): CommandReturnTypes => {
     const command = message.content
       .replace(`${BOT_SYMBOL}butt `, '')
       .split(' ');

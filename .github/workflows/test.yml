@@ -1,0 +1,15 @@
+name: Testing Buttbot
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    container: node:10.16-jessie
+    steps:
+    - uses: actions/checkout@v1
+    - name: yarn, build, and test
+      run: |
+        yarn
+        yarn run test
+        yarn run build
