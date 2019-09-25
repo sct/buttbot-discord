@@ -7,7 +7,7 @@ class Servers {
   private servers = {};
 
   public createServer = (serverId: string): Promise<ServerType> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject): void => {
       this.db.insert(
         {
           _id: serverId,

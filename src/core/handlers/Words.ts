@@ -30,7 +30,7 @@ class Words {
     });
 
   public getWord = ({ word, buttified }): Promise<WordType> =>
-    new Promise(resolve => {
+    new Promise((resolve): void => {
       this.db.findOne({ _id: word }, async (err, fetchedWord: WordType) => {
         if (!fetchedWord) {
           const newWord = await this.createWord(word, buttified);
@@ -42,7 +42,7 @@ class Words {
     });
 
   public getWords = (words: string[]): Promise<WordType[]> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject): void => {
       this.db.find(
         { original: { $in: words } },
         (err, fetchedWords: WordType[]) => {

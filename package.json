@@ -8,7 +8,7 @@
     "dev": "nodemon -e ts -x ts-node src/index.ts",
     "debug": "nodemon -e ts -x ts-node --inspect src/index.ts",
     "build": "rimraf dist && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn run lint",
     "lint": "eslint \"src/**/*.{js,ts}\" --ignore-path .gitignore"
   },
   "author": "sct",
@@ -39,7 +39,7 @@
     "cors": "^2.8.5",
     "discord.js": "^11.5.1",
     "dotenv": "^8.1.0",
-    "fastify": "^1.13.4",
+    "fastify": "^2.8.0",
     "hyphenation.en-us": "^0.2.1",
     "hypher": "^0.2.5",
     "nedb": "^1.8.0",

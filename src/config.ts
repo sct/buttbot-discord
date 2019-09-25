@@ -11,9 +11,11 @@ export interface ButtBotConfig {
   buttBuffer: number;
   buttAI: 0 | 1;
   breakTheFirstRuleOfButtbotics: boolean;
+  apiPort: number;
 }
 
 const config: ButtBotConfig = {
+  apiPort: Number(process.env.API_PORT) || 3000,
   meme: process.env.BOT_MEME || 'butt',
   minimumWordsBeforeButtification:
     Number(process.env.BOT_MINIMUM_BEFORE_BUTTIFY) || 3,
