@@ -212,7 +212,7 @@ const buttify = async (
         `Word exists with score greater than 0, using it! [${wordWithScore.original}]`
       );
       // Find random occurence of word in sentence
-      let wordLocations = [];
+      const wordLocations = [];
       for (x = 0; x < split.length; x++) {
         if (wordWithScore.original === split[x]) {
           wordLocations.push(x);

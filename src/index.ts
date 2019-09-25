@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
+import Fastify from 'fastify';
 import cors from 'cors';
 import BotController from './bot/BotController';
 import db from './core/db';
 import { version } from '../package.json';
+import config from './config';
 import stats from './core/handlers/Stats';
 
 dotenv.config();
@@ -24,7 +26,7 @@ bot.prepare();
 
 // Mini API Butt Server
 
-const fastify = require('fastify')({
+const fastify = Fastify({
   logger: true,
 });
 
@@ -54,8 +56,8 @@ fastify.get(
 
 const start = async (): Promise<void> => {
   try {
-    await fastify.listen(process.env.API_PORT || 3000);
-    fastify.log.info(`server listening on ${fastify.server.address().port}`);
+    await fastify.listen(config.apiPort);
+    fastify.log.info(`server listening on ${config.apiPort}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
