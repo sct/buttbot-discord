@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
+import Fastify from 'fastify';
 import cors from 'cors';
 import BotController from './bot/BotController';
 import db from './core/db';
 import { version } from '../package.json';
+import config from './config';
 import stats from './core/handlers/Stats';
 
 dotenv.config();
@@ -24,30 +26,38 @@ bot.prepare();
 
 // Mini API Butt Server
 
-const fastify = require('fastify')({
+const fastify = Fastify({
   logger: true,
 });
 
 fastify.use(cors());
-fastify.options('*', (req, reply) => {
+fastify.options('*', (req, reply): void => {
   reply.send();
 });
 
-fastify.get('/', async () => {
-  const buttifyCount = await stats.getButtifyCount();
-  const totalServers = bot.client.guilds.size;
-  return {
-    name: 'Buttbot Mini Stats API',
-    version,
-    buttifyCount,
-    totalServers,
-  };
-});
+fastify.get(
+  '/',
+  async (): Promise<{
+    name: string;
+    version: string;
+    buttifyCount: number;
+    totalServers: number;
+  }> => {
+    const buttifyCount = await stats.getButtifyCount();
+    const totalServers = bot.client.guilds.size;
+    return {
+      name: 'Buttbot Mini Stats API',
+      version,
+      buttifyCount,
+      totalServers,
+    };
+  }
+);
 
 const start = async (): Promise<void> => {
   try {
-    await fastify.listen(process.env.API_PORT || 3000);
-    fastify.log.info(`server listening on ${fastify.server.address().port}`);
+    await fastify.listen(config.apiPort);
+    fastify.log.info(`server listening on ${config.apiPort}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

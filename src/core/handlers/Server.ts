@@ -12,21 +12,21 @@ export interface ServerType {
   roles: string[];
   muted: boolean;
   buttifyCount: number;
-  settings: ButtBotConfig;
+  settings?: ButtBotConfig;
 }
 
 class Server {
   private db = db.servers;
   public id: string;
-  public prepared: boolean = false;
-  public lock: number = 0;
+  public prepared = false;
+  public lock = 0;
 
   public constructor(serverId: string) {
     this.id = serverId;
   }
 
   public async prepareServer(): Promise<ServerType> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           Servers.createServer(this.id)
@@ -44,7 +44,7 @@ class Server {
   }
 
   public getWhitelist = (): Promise<string[]> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject): void => {
       this.db.findOne({ _id: this.id }, (err: Error, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
@@ -72,7 +72,7 @@ class Server {
   };
 
   public getRoles = (): Promise<string[]> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject): void => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
@@ -102,7 +102,7 @@ class Server {
   };
 
   public getButtifyCount = (): Promise<number> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject): void => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
@@ -120,8 +120,10 @@ class Server {
     this.db.update({ _id: this.id }, { $set: newSetting });
   };
 
-  public getSetting = (name: string) =>
-    new Promise((resolve, reject) => {
+  public getSetting = (
+    name: string
+  ): Promise<ButtBotConfig[keyof ButtBotConfig]> =>
+    new Promise((resolve, reject): void => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
@@ -136,7 +138,7 @@ class Server {
     });
 
   public getSettings = (): Promise<ButtBotConfig> =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject): void => {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           return reject(new Error('Cant find server in database'));
