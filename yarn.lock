@@ -1357,10 +1357,10 @@ fast-safe-stringify@^2.0.7:
   resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.7.tgz#124aa885899261f68aedb42a7c080de9da608743"
   integrity sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==
 
-fastify@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/fastify/-/fastify-2.8.0.tgz#3c5945d4ee62c058ebeca40952199cae34c738fd"
-  integrity sha512-+HXe9xZzbj79680hlehEs0B1Z3e5RQT6CtPthseqgRJy2i7Wlro8EEdM7u7ewwL9XREjLWssCPlJiZ3G+t4qsw==
+fastify@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/fastify/-/fastify-2.9.0.tgz#34dc51b7df174164fc69d386fc4d5da0f17603f0"
+  integrity sha512-BFItHh22BaKAwbjj5w/RE+TBXdJgslJeTMJq00nK+gRhNO4IPcDIcYxTQY5DvpByA2jrfEFNc8SyxUDZkseS/Q==
   dependencies:
     abstract-logging "^1.0.0"
     ajv "^6.10.2"
@@ -1375,7 +1375,7 @@ fastify@^2.8.0:
     readable-stream "^3.1.1"
     rfdc "^1.1.2"
     secure-json-parse "^1.0.0"
-    tiny-lru "^6.0.1"
+    tiny-lru "^7.0.0"
 
 fastq@^1.6.0:
   version "1.6.0"
@@ -1454,14 +1454,10 @@ flat-cache@^2.0.1:
     rimraf "2.6.3"
     write "1.0.3"
 
-flatstr@^1.0.12:
+flatstr@^1.0.12, flatstr@^1.0.9:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/flatstr/-/flatstr-1.0.12.tgz#c2ba6a08173edbb6c9640e3055b95e287ceb5931"
   integrity sha512-4zPxDyhCyiN2wIAtSLI6gc82/EjqZc1onI4Mz/l0pWrAlsSfYH/2ZIcU+e3oA2wDwbzIWNKwa23F8rh6+DRWkw==
-
-flatstr@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/flatstr/-/flatstr-1.0.9.tgz#0950d56fec02de1030c1311847ecd58c25690eb9"
 
 flatted@^2.0.0:
   version "2.0.0"
@@ -3607,10 +3603,10 @@ timed-out@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"
 
-tiny-lru@^6.0.1:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/tiny-lru/-/tiny-lru-6.1.0.tgz#f29e66e35324a383f55eb03834f2127b1b2fe6d5"
-  integrity sha512-lbz53M11ioFDKxPUBR2UVK7a8JolPZpSkzL0iXW60fpvU98P9+VqWQ7bGGJpGjqnIlILQzl9r+fikhqbcOs7bg==
+tiny-lru@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/tiny-lru/-/tiny-lru-7.0.0.tgz#3a8bafdbd051d3c6ca2f38fd7f0df9ee5a17c5f6"
+  integrity sha512-9/K3P8iGWe7LAbjGit0beF+AXmUvbdxsFt3/wQtuGgIwPf6L1wE3+xgeUFtJgTz/3n13YO6dcpcQbRA5kLvfyw==
 
 tmp@^0.0.33:
   version "0.0.33"
