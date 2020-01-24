@@ -15,31 +15,30 @@
   "license": "MIT",
   "devDependencies": {
     "@types/cors": "2.8.6",
-    "@types/dotenv": "6.1.1",
     "@types/nedb": "1.8.9",
     "@types/pluralize": "0.0.29",
     "@types/valid-url": "1.0.2",
-    "@typescript-eslint/eslint-plugin": "2.3.1",
-    "@typescript-eslint/parser": "2.3.1",
+    "@typescript-eslint/eslint-plugin": "2.17.0",
+    "@typescript-eslint/parser": "2.17.0",
     "babel-eslint": "10.0.3",
-    "eslint": "6.4.0",
-    "eslint-config-prettier": "6.3.0",
-    "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-prettier": "3.1.1",
-    "husky": "3.0.5",
-    "lint-staged": "9.3.0",
-    "nodemon": "2.0.1",
-    "prettier": "1.18.2",
-    "ts-node": "8.4.1",
-    "typescript": "3.6.3"
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.9.0",
+    "eslint-plugin-import": "2.20.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "husky": "4.2.1",
+    "lint-staged": "10.0.2",
+    "nodemon": "2.0.2",
+    "prettier": "1.19.1",
+    "ts-node": "8.6.2",
+    "typescript": "3.7.5"
   },
   "dependencies": {
-    "axios": "^0.19.0",
-    "bufferutil": "^3.0.3",
+    "@discordjs/uws": "^11.149.1",
+    "axios": "^0.19.2",
     "cors": "^2.8.5",
     "discord.js": "^11.5.1",
-    "dotenv": "^8.1.0",
-    "fastify": "^2.8.0",
+    "dotenv": "^8.2.0",
+    "fastify": "^2.11.0",
     "hyphenation.en-us": "^0.2.1",
     "hypher": "^0.2.5",
     "nedb": "^1.8.0",
@@ -58,8 +57,7 @@
   },
   "lint-staged": {
     "*.{js,json,css,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }
