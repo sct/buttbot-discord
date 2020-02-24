@@ -150,10 +150,7 @@ const buttify = async (
   const split = prepareForButtification(string);
 
   if (split.length < config.minimumWordsBeforeButtification) {
-    err = {
-      failed: true,
-      msg: 'Not enough words to buttify',
-    };
+    err = 'Not enough words to buttify';
     throw new Error(err);
   }
 
@@ -249,10 +246,7 @@ const buttify = async (
   const final = finishButtification(split);
 
   if (!didWeActuallyButt(originalString, final)) {
-    err = {
-      failed: true,
-      msg: "We didn't buttify anything! Abort!",
-    };
+    err = "We didn't buttify anything! Abort!";
   }
 
   // Output if no error

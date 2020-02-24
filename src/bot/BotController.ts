@@ -95,65 +95,86 @@ class BotController {
   };
 
   public async handleButtChance(message: Discord.Message): Promise<void> {
-    const server = await servers.getServer(message.guild.id);
+    try {
+      const server = await servers.getServer(message.guild.id);
 
-    const whitelist = await server.getWhitelist();
-    const config = await server.getSettings();
+      const whitelist = await server.getWhitelist();
+      const config = await server.getSettings();
 
-    // This is a small in-memory lock to prevent the bot from spamming back to back messages
-    // on a single server due to strange luck.
-    // Because the chance is calculated AFTER the lock is reset, there is only a roll for a
-    // buttification chance every X number of messages
-    if (server.lock > 0) {
-      server.lock -= 1;
-    }
+      // This is a small in-memory lock to prevent the bot from spamming back to back messages
+      // on a single server due to strange luck.
+      // Because the chance is calculated AFTER the lock is reset, there is only a roll for a
+      // buttification chance every X number of messages
+      if (server.lock > 0) {
+        server.lock -= 1;
+      }
 
-    const messageChannel = message.channel as TextChannel;
+      const messageChannel = message.channel as TextChannel;
 
-    // Do the thing to handle the butt chance here
-    if (
-      (this.client.user.id !== message.author.id ||
-        !message.author.bot ||
-        config.breakTheFirstRuleOfButtbotics) &&
-      whitelist.includes(messageChannel.name) &&
-      server.lock === 0 &&
-      Math.random() < config.chanceToButt
-    ) {
-      const availableWords = message.content.trim().split(' ');
-      const wordsButtifiable = availableWords.filter(w => shouldWeButt(w));
-      const wordsWithScores = await wordsDb.getWords(wordsButtifiable);
-      buttify(message.content, wordsWithScores)
-        .then(({ result, words }) => {
-          message.channel.send(result).then((buttMessage: Discord.Message) => {
-            if (config.buttAI === 1) {
-              const emojiFilter = (reaction: MessageReaction): boolean =>
-                reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
-              buttMessage.react('👍').then(() => buttMessage.react('👎'));
-              buttMessage
-                .awaitReactions(emojiFilter, { time: 1000 * 60 * 10 }) // Only listen for 10 minutes
-                .then(async collected => {
-                  const upbutts = collected.get('👍').count - 1;
-                  const downbutts = collected.get('👎').count - 1;
-                  const score = upbutts - downbutts;
-                  words.forEach(async word => {
-                    wordsDb.updateScore(word, score);
-                  });
-                  // When the time runs out, we will clear reactions and
-                  // react with the winning vote and a lock
-                  await buttMessage.react('🔒');
-                  if (upbutts >= downbutts) {
-                    await buttMessage.react('🎉');
-                  } else {
-                    await buttMessage.react('😭');
-                  }
-                })
-                .catch(err => logger.error(err));
+      // Do the thing to handle the butt chance here
+      if (
+        (this.client.user.id !== message.author.id ||
+          !message.author.bot ||
+          config.breakTheFirstRuleOfButtbotics) &&
+        whitelist.includes(messageChannel.name) &&
+        server.lock === 0 &&
+        Math.random() < config.chanceToButt
+      ) {
+        const availableWords = message.content.trim().split(' ');
+        const wordsButtifiable = availableWords.filter(w => shouldWeButt(w));
+        const wordsWithScores = await wordsDb.getWords(wordsButtifiable);
+        const { result, words } = await buttify(
+          message.content,
+          wordsWithScores
+        );
+        const buttMessage = (await message.channel.send(
+          result
+        )) as Discord.Message;
+
+        // Our dumb buttAI code
+        if (config.buttAI === 1) {
+          const emojiFilter = (reaction: MessageReaction): boolean =>
+            reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
+          const collector = buttMessage.createReactionCollector(emojiFilter, {
+            time: 1000 * 60 * 10,
+          });
+          await buttMessage.react('👍');
+          await buttMessage.react('👎');
+          collector.on('end', async collected => {
+            try {
+              const upbutts = (collected.get('👍')?.count ?? 0) - 1;
+              const downbutts = (collected.get('👎')?.count ?? 0) - 1;
+              const score = upbutts - downbutts;
+
+              if (score) {
+                words.forEach(async word => {
+                  wordsDb.updateScore(word, score);
+                });
+                // When the time runs out, we will clear reactions and
+                // react with the winning vote and a lock
+                await buttMessage.react('🔒');
+                if (upbutts >= downbutts) {
+                  await buttMessage.react('🎉');
+                } else {
+                  await buttMessage.react('😭');
+                }
+                logger.debug('Recorded score for words', { score, words });
+              } else {
+                logger.debug('Score 0. No changes recorded for words', {
+                  words,
+                });
+              }
+            } catch (error) {
+              logger.error('Something went wrong collecting reaction', error);
             }
           });
-          server.lock = config.buttBuffer;
-          server.trackButtification();
-        })
-        .catch(error => logger.debug(error));
+        }
+
+        server.lock = config.buttBuffer;
+        server.trackButtification();
+      }
+    } catch (error) {
+      logger.debug('Something went wrong handling butt chance', error);
     }
   }
 }
