@@ -67,30 +67,44 @@ class BotController {
     });
   };
 
-  public handleCommand = (message: Discord.Message): CommandReturnTypes => {
+  public handleCommand = async (message: Discord.Message): Promise<void> => {
     const command = message.content
       .replace(`${BOT_SYMBOL}butt `, '')
       .split(' ');
 
     logger.info(command);
 
-    switch (command[0]) {
-      case 'about':
-        return commandAbout(message);
-      case 'help':
-        return commandHelp(message);
-      case 'firstrule':
-        return commandFirstRule(message);
-      case 'stats':
-        return commandButtifyCount(message);
-      case 'whitelist':
-        return commandServerWhitelist(message);
-      case 'access':
-        return commandServerAccess(message);
-      case 'setting':
-        return commandServerSetting(message, command[1], command[2]);
-      default:
-        return commandUnknown(message);
+    try {
+      switch (command[0]) {
+        case 'about':
+          await commandAbout(message);
+          break;
+        case 'help':
+          await commandHelp(message);
+          break;
+        case 'firstrule':
+          await commandFirstRule(message);
+          break;
+        case 'stats':
+          await commandButtifyCount(message);
+          break;
+        case 'whitelist':
+          await commandServerWhitelist(message);
+          break;
+        case 'access':
+          await commandServerAccess(message);
+          break;
+        case 'setting':
+          await commandServerSetting(message, command[1], command[2]);
+          break;
+        default:
+          await commandUnknown(message);
+      }
+    } catch (error) {
+      logger.info(`Command error occured: ${error.message}`, {
+        command,
+        error,
+      });
     }
   };
 
