@@ -18,6 +18,10 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.4.1
+
+- Cleaned up logging for failed commands due to user error
+
 ### 1.4.0
 
 - Update vote handling to use reaction controller to fix issues with the voting dying after some time
