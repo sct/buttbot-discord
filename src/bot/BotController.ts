@@ -112,7 +112,6 @@ class BotController {
     logger.debug('Handling butt chance');
     try {
       const server = await servers.getServer(message.guild.id);
-      logger.debug('Retrieved server', { server });
 
       const whitelist = await server.getWhitelist();
       const config = await server.getSettings();
