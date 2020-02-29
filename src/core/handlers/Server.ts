@@ -148,14 +148,16 @@ class Server {
           return resolve(config);
         }
 
-        const settings = config;
+        const settings: Partial<ButtBotConfig> = {};
 
         settings.chanceToButt =
           server.settings.chanceToButt || config.chanceToButt;
         settings.buttBuffer = server.settings.buttBuffer || config.buttBuffer;
         settings.buttAI = server.settings.buttAI === 0 ? 0 : config.buttAI;
 
-        return resolve(settings);
+        const mergedSettings = Object.assign({}, config, settings);
+
+        return resolve(mergedSettings);
       });
     });
 }
