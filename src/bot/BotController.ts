@@ -109,11 +109,14 @@ class BotController {
   };
 
   public async handleButtChance(message: Discord.Message): Promise<void> {
+    logger.debug('Handling butt chance');
     try {
       const server = await servers.getServer(message.guild.id);
+      logger.debug('Retrieved server', { server });
 
       const whitelist = await server.getWhitelist();
       const config = await server.getSettings();
+      logger.debug('Server config', { config });
 
       // This is a small in-memory lock to prevent the bot from spamming back to back messages
       // on a single server due to strange luck.
@@ -144,9 +147,11 @@ class BotController {
         const buttMessage = (await message.channel.send(
           result
         )) as Discord.Message;
+        logger.debug('Send buttified message to channel', { result });
 
         // Our dumb buttAI code
         if (config.buttAI === 1) {
+          logger.debug('ButtAI is enabled. Adding and collecting reactions...');
           const emojiFilter = (reaction: MessageReaction): boolean =>
             reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
           const collector = buttMessage.createReactionCollector(emojiFilter, {
@@ -154,11 +159,13 @@ class BotController {
           });
           await buttMessage.react('👍');
           await buttMessage.react('👎');
+          logger.debug('Bot reactions added');
           collector.on('end', async collected => {
             try {
               const upbutts = (collected.get('👍')?.count ?? 0) - 1;
               const downbutts = (collected.get('👎')?.count ?? 0) - 1;
               const score = upbutts - downbutts;
+              logger.debug('Collecting reactions and getting score', { score });
 
               if (score) {
                 words.forEach(async word => {
