@@ -18,6 +18,10 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.4.2
+
+- Added more debug logging to message handling to figure out why the reaction collector isn't working sometimes
+
 ### 1.4.1
 
 - Cleaned up logging for failed commands due to user error
