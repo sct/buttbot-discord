@@ -44,7 +44,7 @@
     "nedb": "^1.8.0",
     "pluralize": "^8.0.0",
     "valid-url": "^1.0.9",
-    "winston": "^3.2.1"
+    "winston": "^3.3.3"
   },
   "prettier": {
     "singleQuote": true,
