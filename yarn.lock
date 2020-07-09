@@ -124,11 +124,6 @@
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
-"@discordjs/uws@^11.149.1":
-  version "11.149.1"
-  resolved "https://registry.yarnpkg.com/@discordjs/uws/-/uws-11.149.1.tgz#2e86f2825f43bed43d2e69eaf30a07d2dd8e8946"
-  integrity sha512-TmbwZaeXDSCq0ckmf2q10Fkt1220gu9AZJ/UvtQjsi2jyJDjy0i0OwL4/eb3vc9Cwr0mpC9EbfzltQ2si0qUiQ==
-
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
