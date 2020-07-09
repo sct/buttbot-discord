@@ -36,8 +36,10 @@ class Servers {
     if (!server.prepared) {
       await server
         .prepareServer()
-        .then(preparedServer => logger.debug('Server Prepared', preparedServer))
-        .catch(error => logger.error(error));
+        .then((preparedServer) =>
+          logger.debug('Server Prepared', preparedServer)
+        )
+        .catch((error) => logger.error(error));
     }
 
     this.servers[serverId] = server;

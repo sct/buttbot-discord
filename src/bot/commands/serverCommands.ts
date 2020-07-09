@@ -10,7 +10,7 @@ const verifyPermission = async (message: Message): Promise<boolean> => {
 
   if (
     member.id !== message.guild.ownerID &&
-    !roles.find(roleId => !!member.roles.get(roleId)) &&
+    !roles.find((roleId) => !!member.roles.get(roleId)) &&
     !member.hasPermissions('MANAGE_GUILD')
   ) {
     message.channel.send('You do not have permission to manage buttification');

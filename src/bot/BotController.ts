@@ -48,7 +48,7 @@ class BotController {
       });
     });
 
-    this.client.on('error', error => {
+    this.client.on('error', (error) => {
       logger.error(`Something went wrong. Reason: ${error.message}`);
     });
   };
@@ -58,7 +58,7 @@ class BotController {
   };
 
   private loadListeners = (): void => {
-    this.client.on('message', message => {
+    this.client.on('message', (message) => {
       if (message.content.match(/^\?butt(.*)/)) {
         this.handleCommand(message);
       } else {
@@ -137,7 +137,7 @@ class BotController {
         Math.random() < config.chanceToButt
       ) {
         const availableWords = message.content.trim().split(' ');
-        const wordsButtifiable = availableWords.filter(w => shouldWeButt(w));
+        const wordsButtifiable = availableWords.filter((w) => shouldWeButt(w));
         const wordsWithScores = await wordsDb.getWords(wordsButtifiable);
         const { result, words } = await buttify(
           message.content,
@@ -159,7 +159,7 @@ class BotController {
           await buttMessage.react('👍');
           await buttMessage.react('👎');
           logger.debug('Bot reactions added');
-          collector.on('end', async collected => {
+          collector.on('end', async (collected) => {
             try {
               const upbutts = (collected.get('👍')?.count ?? 0) - 1;
               const downbutts = (collected.get('👎')?.count ?? 0) - 1;
@@ -167,7 +167,7 @@ class BotController {
               logger.debug('Collecting reactions and getting score', { score });
 
               if (score) {
-                words.forEach(async word => {
+                words.forEach(async (word) => {
                   wordsDb.updateScore(word, score);
                 });
                 // When the time runs out, we will clear reactions and

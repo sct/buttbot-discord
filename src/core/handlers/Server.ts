@@ -30,11 +30,11 @@ class Server {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           Servers.createServer(this.id)
-            .then(newServer => {
+            .then((newServer) => {
               this.prepared = true;
               return resolve(newServer);
             })
-            .catch(e => reject(e));
+            .catch((e) => reject(e));
         } else {
           this.prepared = true;
           return resolve(server);
