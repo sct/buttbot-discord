@@ -44,7 +44,7 @@ class BotController {
       logger.info('Connected to Discord');
 
       this.client.user.setPresence({
-        game: { name: 'buttbot.net | ?butt about' },
+        activity: { name: 'buttbot.net | ?butt about' },
       });
     });
 
@@ -77,13 +77,13 @@ class BotController {
     try {
       switch (command[0]) {
         case 'about':
-          await commandAbout(message);
+          commandAbout(message);
           break;
         case 'help':
-          await commandHelp(message);
+          commandHelp(message);
           break;
         case 'firstrule':
-          await commandFirstRule(message);
+          commandFirstRule(message);
           break;
         case 'stats':
           await commandButtifyCount(message);
@@ -98,7 +98,7 @@ class BotController {
           await commandServerSetting(message, command[1], command[2]);
           break;
         default:
-          await commandUnknown(message);
+          commandUnknown(message);
       }
     } catch (error) {
       logger.info(`Command error occured: ${error.message}`, {

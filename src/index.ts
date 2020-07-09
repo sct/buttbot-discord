@@ -44,7 +44,7 @@ fastify.get(
     totalServers: number;
   }> => {
     const buttifyCount = await stats.getButtifyCount();
-    const totalServers = bot.client.guilds.size;
+    const totalServers = bot.client.guilds.cache.size;
     return {
       name: 'Buttbot Mini Stats API',
       version,
