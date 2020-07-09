@@ -9,7 +9,8 @@
     "debug": "nodemon -e ts -x ts-node --inspect src/index.ts",
     "build": "rimraf dist && tsc",
     "test": "yarn run lint",
-    "lint": "eslint \"src/**/*.{js,ts}\" --ignore-path .gitignore"
+    "lint": "eslint \"src/**/*.{js,ts}\" --ignore-path .gitignore",
+    "prettier": "prettier --write \"src/**/*.{js,ts}\""
   },
   "author": "sct",
   "license": "MIT",
@@ -28,7 +29,7 @@
     "husky": "4.2.5",
     "lint-staged": "10.2.11",
     "nodemon": "2.0.4",
-    "prettier": "1.19.1",
+    "prettier": "2.0.5",
     "ts-node": "8.10.2",
     "typescript": "3.9.6"
   },
