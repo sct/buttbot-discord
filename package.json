@@ -38,7 +38,7 @@
     "cors": "^2.8.5",
     "discord.js": "12.2.0",
     "dotenv": "^8.2.0",
-    "fastify": "^2.12.0",
+    "fastify": "^3.0.2",
     "hyphenation.en-us": "^0.2.1",
     "hypher": "^0.2.5",
     "nedb": "^1.8.0",
