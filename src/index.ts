@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import Fastify from 'fastify';
-import cors from 'cors';
+import cors from 'fastify-cors';
 import BotController from './bot/BotController';
 import db from './core/db';
 import { version } from '../package.json';
@@ -30,10 +30,7 @@ const fastify = Fastify({
   logger: true,
 });
 
-fastify.use(cors());
-fastify.options('*', (req, reply): void => {
-  reply.send();
-});
+fastify.register(cors);
 
 fastify.get(
   '/',
@@ -44,7 +41,7 @@ fastify.get(
     totalServers: number;
   }> => {
     const buttifyCount = await stats.getButtifyCount();
-    const totalServers = bot.client.guilds.size;
+    const totalServers = bot.client.guilds.cache.size;
     return {
       name: 'Buttbot Mini Stats API',
       version,
