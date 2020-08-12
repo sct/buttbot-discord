@@ -30,11 +30,11 @@ class Server {
       this.db.findOne({ _id: this.id }, (err, server: ServerType) => {
         if (!server) {
           Servers.createServer(this.id)
-            .then(newServer => {
+            .then((newServer) => {
               this.prepared = true;
               return resolve(newServer);
             })
-            .catch(e => reject(e));
+            .catch((e) => reject(e));
         } else {
           this.prepared = true;
           return resolve(server);
@@ -129,7 +129,7 @@ class Server {
           return reject(new Error('Cant find server in database'));
         }
 
-        if (!server.settings && !server.settings[name]) {
+        if (!server.settings && typeof server.settings[name] === undefined) {
           return resolve(config[name]);
         }
 
@@ -152,7 +152,10 @@ class Server {
 
         settings.chanceToButt =
           server.settings.chanceToButt || config.chanceToButt;
-        settings.buttBuffer = server.settings.buttBuffer || config.buttBuffer;
+        settings.buttBuffer =
+          typeof server.settings.buttBuffer !== undefined
+            ? server.settings.buttBuffer
+            : config.buttBuffer;
         settings.buttAI = server.settings.buttAI === 0 ? 0 : config.buttAI;
 
         const mergedSettings = Object.assign({}, config, settings);

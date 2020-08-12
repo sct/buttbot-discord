@@ -10,8 +10,8 @@ const verifyPermission = async (message: Message): Promise<boolean> => {
 
   if (
     member.id !== message.guild.ownerID &&
-    !roles.find(roleId => !!member.roles.get(roleId)) &&
-    !member.hasPermissions('MANAGE_GUILD')
+    !roles.find((roleId) => !!member.roles.cache.get(roleId)) &&
+    !member.hasPermission('MANAGE_GUILD')
   ) {
     message.channel.send('You do not have permission to manage buttification');
     logger.debug('Unauthorized user attempting command access');
@@ -135,7 +135,17 @@ export const commandServerSetting = async (
         `The setting **${setting}** has been updated to: ${value}`
       );
       return server.setSetting(setting, Number(value));
-
+    case 'buttBuffer':
+      // Check if value is actually a number
+      const parsedNumber = parseInt(value);
+      if (isNaN(parsedNumber)) {
+        message.channel.send('Please provide a valid number');
+        throw new Error('Invalid value passed in for buttBuffer');
+      }
+      message.channel.send(
+        `The setting **${setting}** has been updated to: ${value}`
+      );
+      return server.setSetting(setting, parsedNumber);
     default:
       message.channel.send(
         `The setting **${setting}** has been updated to: ${value}`

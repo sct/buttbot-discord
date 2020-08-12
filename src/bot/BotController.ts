@@ -44,11 +44,11 @@ class BotController {
       logger.info('Connected to Discord');
 
       this.client.user.setPresence({
-        game: { name: 'buttbot.net | ?butt about' },
+        activity: { name: 'buttbot.net | ?butt about' },
       });
     });
 
-    this.client.on('error', error => {
+    this.client.on('error', (error) => {
       logger.error(`Something went wrong. Reason: ${error.message}`);
     });
   };
@@ -58,7 +58,7 @@ class BotController {
   };
 
   private loadListeners = (): void => {
-    this.client.on('message', message => {
+    this.client.on('message', (message) => {
       if (message.content.match(/^\?butt(.*)/)) {
         this.handleCommand(message);
       } else {
@@ -77,13 +77,13 @@ class BotController {
     try {
       switch (command[0]) {
         case 'about':
-          await commandAbout(message);
+          commandAbout(message);
           break;
         case 'help':
-          await commandHelp(message);
+          commandHelp(message);
           break;
         case 'firstrule':
-          await commandFirstRule(message);
+          commandFirstRule(message);
           break;
         case 'stats':
           await commandButtifyCount(message);
@@ -98,7 +98,7 @@ class BotController {
           await commandServerSetting(message, command[1], command[2]);
           break;
         default:
-          await commandUnknown(message);
+          commandUnknown(message);
       }
     } catch (error) {
       logger.info(`Command error occured: ${error.message}`, {
@@ -117,6 +117,8 @@ class BotController {
       const config = await server.getSettings();
       logger.debug('Server config', { config });
 
+      logger.debug(`Server lock is ${server.lock}`);
+
       // This is a small in-memory lock to prevent the bot from spamming back to back messages
       // on a single server due to strange luck.
       // Because the chance is calculated AFTER the lock is reset, there is only a roll for a
@@ -134,10 +136,10 @@ class BotController {
           config.breakTheFirstRuleOfButtbotics) &&
         whitelist.includes(messageChannel.name) &&
         server.lock === 0 &&
-        Math.random() < config.chanceToButt
+        Math.random() <= config.chanceToButt
       ) {
         const availableWords = message.content.trim().split(' ');
-        const wordsButtifiable = availableWords.filter(w => shouldWeButt(w));
+        const wordsButtifiable = availableWords.filter((w) => shouldWeButt(w));
         const wordsWithScores = await wordsDb.getWords(wordsButtifiable);
         const { result, words } = await buttify(
           message.content,
@@ -159,7 +161,7 @@ class BotController {
           await buttMessage.react('👍');
           await buttMessage.react('👎');
           logger.debug('Bot reactions added');
-          collector.on('end', async collected => {
+          collector.on('end', async (collected) => {
             try {
               const upbutts = (collected.get('👍')?.count ?? 0) - 1;
               const downbutts = (collected.get('👎')?.count ?? 0) - 1;
@@ -167,7 +169,7 @@ class BotController {
               logger.debug('Collecting reactions and getting score', { score });
 
               if (score) {
-                words.forEach(async word => {
+                words.forEach(async (word) => {
                   wordsDb.updateScore(word, score);
                 });
                 // When the time runs out, we will clear reactions and

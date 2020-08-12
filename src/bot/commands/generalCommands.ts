@@ -1,4 +1,4 @@
-import { RichEmbed, Message } from 'discord.js';
+import { MessageEmbed, Message } from 'discord.js';
 
 import { version } from '../../../package.json';
 import stats from '../../core/handlers/Stats';
@@ -16,7 +16,7 @@ export const commandAbout = async (message: Message): Promise<void> => {
 
   const serverButtifyCount = await server.getButtifyCount();
 
-  const embed = new RichEmbed()
+  const embed = new MessageEmbed()
     .setAuthor('ButtBot')
     .setDescription(
       `ButtBot Discord is a homage to my favorite IRC bot in existence, the buttbot. It serves one simple purpose, comedy.
@@ -27,7 +27,7 @@ Whats the deal with these reactions on every message now? This is a experiemntal
 `
     )
     .addField('Help Command', '?butt help')
-    .addField('Buttified Servers', message.client.guilds.size, true)
+    .addField('Buttified Servers', message.client.guilds.cache.size, true)
     .addField('Global Buttified Messages', buttifyCount, true)
     .addField("This Server's Buttifications", serverButtifyCount, true)
     .addField('Want ButtBot on your server?', 'https://buttbot.net')
@@ -39,7 +39,7 @@ Whats the deal with these reactions on every message now? This is a experiemntal
 };
 
 export const commandHelp = (message: Message): void => {
-  const embed = new RichEmbed()
+  const embed = new MessageEmbed()
     .setAuthor('ButtBot Help')
     .setDescription(
       'The following commands are available to roles with permissions or server owners:'
