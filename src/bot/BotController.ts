@@ -117,6 +117,8 @@ class BotController {
       const config = await server.getSettings();
       logger.debug('Server config', { config });
 
+      logger.debug(`Server lock is ${server.lock}`);
+
       // This is a small in-memory lock to prevent the bot from spamming back to back messages
       // on a single server due to strange luck.
       // Because the chance is calculated AFTER the lock is reset, there is only a roll for a
@@ -134,7 +136,7 @@ class BotController {
           config.breakTheFirstRuleOfButtbotics) &&
         whitelist.includes(messageChannel.name) &&
         server.lock === 0 &&
-        Math.random() < config.chanceToButt
+        Math.random() <= config.chanceToButt
       ) {
         const availableWords = message.content.trim().split(' ');
         const wordsButtifiable = availableWords.filter((w) => shouldWeButt(w));

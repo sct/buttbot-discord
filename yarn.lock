@@ -726,13 +726,6 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-cors@^2.8.5:
-  version "2.8.5"
-  resolved "https://registry.yarnpkg.com/cors/-/cors-2.8.5.tgz#eac11da51592dd86b9f06f6e7ac293b3df875d29"
-  dependencies:
-    object-assign "^4"
-    vary "^1"
-
 cosmiconfig@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-6.0.0.tgz#da4fee853c52f6b1e6935f41c1a2fc50bd4a9982"
@@ -1200,10 +1193,25 @@ fast-safe-stringify@^2.0.7:
   resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.7.tgz#124aa885899261f68aedb42a7c080de9da608743"
   integrity sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==
 
+fastify-cors@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/fastify-cors/-/fastify-cors-4.1.0.tgz#ae6e2533f42b033a35da85ed3d585aafd56c2210"
+  integrity sha512-Vr4AgypDkRwG16cs1ORnYItZx6FMN+gCpHvP3/nzNZL1HFzf7U/NaSgmC784VqtK8yiqSXZEoTGCsmzeSp8JVw==
+  dependencies:
+    fastify-plugin "^2.0.0"
+    vary "^1.1.2"
+
 fastify-error@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/fastify-error/-/fastify-error-0.1.0.tgz#7ca9d3708a2b1a74aefed0e5dde1b96d0390f718"
   integrity sha512-jyCEc3VPEc8/PUwzDQAM2JlXLK2BG6L19mMJzbGij0TfdY1sHF9pCnnAn6Vcoi84TMTBOJynNDQUMUz6cjRmBw==
+
+fastify-plugin@^2.0.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-2.3.0.tgz#ef09432fd099e7cbd45f9612efc22da1da213fea"
+  integrity sha512-FOfgK3ORSXMl9AbXmkADH2gZ4qiegcYuJfDxKNlL0jQKLndbXYoBjifinYkSi2mTewDwu/LMlAGe4PVyhLpSXA==
+  dependencies:
+    semver "^7.3.2"
 
 fastify@^3.1.1:
   version "3.1.1"
@@ -2106,10 +2114,6 @@ npm-run-path@^4.0.0:
   integrity sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==
   dependencies:
     path-key "^3.0.0"
-
-object-assign@^4:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
 object-inspect@^1.7.0:
   version "1.7.0"
@@ -3091,7 +3095,7 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vary@^1:
+vary@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 

@@ -135,7 +135,17 @@ export const commandServerSetting = async (
         `The setting **${setting}** has been updated to: ${value}`
       );
       return server.setSetting(setting, Number(value));
-
+    case 'buttBuffer':
+      // Check if value is actually a number
+      const parsedNumber = parseInt(value);
+      if (isNaN(parsedNumber)) {
+        message.channel.send('Please provide a valid number');
+        throw new Error('Invalid value passed in for buttBuffer');
+      }
+      message.channel.send(
+        `The setting **${setting}** has been updated to: ${value}`
+      );
+      return server.setSetting(setting, parsedNumber);
     default:
       message.channel.send(
         `The setting **${setting}** has been updated to: ${value}`
