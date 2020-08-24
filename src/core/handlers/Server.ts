@@ -129,7 +129,7 @@ class Server {
           return reject(new Error('Cant find server in database'));
         }
 
-        if (!server.settings && typeof server.settings[name] === undefined) {
+        if (!server.settings && typeof server.settings[name] === 'undefined') {
           return resolve(config[name]);
         }
 
@@ -153,7 +153,7 @@ class Server {
         settings.chanceToButt =
           server.settings.chanceToButt || config.chanceToButt;
         settings.buttBuffer =
-          typeof server.settings.buttBuffer !== undefined
+          typeof server.settings.buttBuffer !== 'undefined'
             ? server.settings.buttBuffer
             : config.buttBuffer;
         settings.buttAI = server.settings.buttAI === 0 ? 0 : config.buttAI;
