@@ -50,12 +50,12 @@ function capitalizeFirstLetter(string: string): string {
  * @return {boolean}
  */
 export const shouldWeButt = (string: string): boolean => {
-  // Is the word the same as our meme?
+  // Does the word contain or is the meme?
   if (
-    string.toLowerCase() === config.meme ||
-    pluralize.singular(string.toLowerCase()) === config.meme
+    string.toLowerCase().includes(config.meme) ||
+    pluralize.singular(string.toLowerCase()).includes(config.meme)
   ) {
-    logger.debug('Skipping buttification. Word matches configured meme');
+    logger.debug('Skipping buttification. Word contains configured meme');
     return false;
   }
 

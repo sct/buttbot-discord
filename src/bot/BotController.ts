@@ -16,6 +16,7 @@ import {
 } from './commands/serverCommands';
 import servers from '../core/handlers/Servers';
 import wordsDb from '../core/handlers/Words';
+import baseConfig from '../config';
 
 const BOT_SYMBOL = '?';
 
@@ -118,6 +119,25 @@ class BotController {
       logger.debug('Server config', { config });
 
       logger.debug(`Server lock is ${server.lock}`);
+
+      // Temporary helper to convert servers that may have set strings as their buttBuffer setting
+      if (typeof server.lock === 'string') {
+        logger.debug(
+          `Server [${server.id}] has a string for buttBuffer... converting!`
+        );
+        let newLock = parseInt(server.lock);
+
+        if (isNaN(newLock)) {
+          logger.debug(
+            `Server [${server.id}] had an invalid string (not a number). Resetting to default buffer`
+          );
+          server.setSetting('buttBuffer', baseConfig.buttBuffer);
+          newLock = baseConfig.buttBuffer;
+        } else {
+          server.setSetting('buttBuffer', newLock);
+        }
+        server.lock = newLock;
+      }
 
       // This is a small in-memory lock to prevent the bot from spamming back to back messages
       // on a single server due to strange luck.

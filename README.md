@@ -18,6 +18,14 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.4.5
+
+- Fixes an issue where some words contained the configured meme but were still being chosen to be changed (Thank you @nicospz)
+
+### 1.4.4
+
+- Fixes issue with buttBuffer setting not actually working
+
 ### 1.4.3
 
 - Fixes a bug where the default config object was being mutated, causing inconsistencies in configs between servers
