@@ -1211,10 +1211,10 @@ fastify-warning@^0.2.0:
   resolved "https://registry.yarnpkg.com/fastify-warning/-/fastify-warning-0.2.0.tgz#e717776026a4493dc9a2befa44db6d17f618008f"
   integrity sha512-s1EQguBw/9qtc1p/WTY4eq9WMRIACkj+HTcOIK1in4MV5aFaQC9ZCIt0dJ7pr5bIf4lPpHvAtP2ywpTNgs7hqw==
 
-fastify@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/fastify/-/fastify-3.2.1.tgz#119250e50a3f49e1a8036a4abaebef9823b0db1c"
-  integrity sha512-2y2qZzS4bqD1cwaX72ot8DjjUFqqxn/SbgKN1xe4vH2HVy7c6u++6IY8HzBRWJv38p3WiBogLWAObxaISxUlJg==
+fastify@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/fastify/-/fastify-3.4.1.tgz#7dce8f31f0c9f6f44f3e25403b1f4be75e1f87bd"
+  integrity sha512-a3I9hjet4XfWFSNYOEO209lERiMNIjpNm7gSuEzESeKAuX5BChJV9r09zWXEJqOLseBUTVCvakjookG7O8Zapw==
   dependencies:
     abstract-logging "^2.0.0"
     ajv "^6.12.2"
@@ -1224,7 +1224,7 @@ fastify@^3.2.1:
     fastify-warning "^0.2.0"
     find-my-way "^3.0.0"
     flatstr "^1.0.12"
-    light-my-request "^4.0.0"
+    light-my-request "^4.0.2"
     pino "^6.2.1"
     proxy-addr "^2.0.5"
     readable-stream "^3.4.0"
@@ -1839,10 +1839,10 @@ lie@3.1.1:
   dependencies:
     immediate "~3.0.5"
 
-light-my-request@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-4.0.1.tgz#7e18f2c3f8535123c329b1ae78a5d6750424a096"
-  integrity sha512-kGRfzvSS9P/zEsnu34pUisOz2FAPqkHFJfdezW6HRzLLlzjY+1LTRRuh2d82SkW/M/QWNVWnXTZ0HMUydz2fgg==
+light-my-request@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-4.0.2.tgz#e80ebbbac512f0f45b9e54cb274b8f121248b924"
+  integrity sha512-VaiiqR2NtdgYL8zQENPr7FBBVKCGioqa06HYnidj/GC+6jibyZrNCrk6FU8fqe9WWQDqwOtt0UCWLGe0GjyjgA==
   dependencies:
     ajv "^6.12.2"
     cookie "^0.4.0"
