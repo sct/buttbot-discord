@@ -248,7 +248,7 @@ const buttify = async (
   if (!didWeActuallyButt(originalString, final)) {
     err = "We didn't buttify anything! Abort!";
   }
-  
+
   const escapedFinal = final.split(' ').map(function (part) { 
     return validUrl.isUri(part) ? '<' + part + '>' : part 
   }).join(' ');
