@@ -250,7 +250,7 @@ const buttify = async (
   }
 
   const escapedFinal = final.split(' ').map(function (part) { 
-    return validUrl.isUri(part) ? '<' + part + '>' : part 
+    return validUrl.isUri(part) ? '<' + part + '>' : part;
   }).join(' ');
 
   // Output if no error
