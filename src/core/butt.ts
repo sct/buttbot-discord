@@ -249,12 +249,19 @@ const buttify = async (
     err = "We didn't buttify anything! Abort!";
   }
 
+  const escapedFinal = final
+    .split(' ')
+    .map(function (part) {
+      return validUrl.isUri(part) ? '<' + part + '>' : part;
+    })
+    .join(' ');
+
   // Output if no error
   if (err) {
     throw new Error(err);
   }
 
-  return { result: final, words: buttifiedWords };
+  return { result: escapedFinal, words: buttifiedWords };
 };
 
 export default buttify;
