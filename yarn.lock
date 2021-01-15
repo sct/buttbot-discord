@@ -1140,9 +1140,10 @@ external-editor@^3.0.3:
     iconv-lite "^0.4.24"
     tmp "^0.0.33"
 
-fast-decode-uri-component@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/fast-decode-uri-component/-/fast-decode-uri-component-1.0.0.tgz#7ce10336aa4b26286fee93d71e6785ff0f596a33"
+fast-decode-uri-component@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/fast-decode-uri-component/-/fast-decode-uri-component-1.0.1.tgz#46f8b6c22b30ff7a81357d4f59abfae938202543"
+  integrity sha512-WKgKWg5eUxvRZGwW8FvfbaH7AXSh2cL+3j5fMGzUMCxWBJ3dV3a7Wz8y2f/uQ0e3B6WmodD3oS54jTQ9HVTIIg==
 
 fast-deep-equal@^3.1.1:
   version "3.1.1"
@@ -1194,10 +1195,10 @@ fastify-cors@^4.1.0:
     fastify-plugin "^2.0.0"
     vary "^1.1.2"
 
-fastify-error@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/fastify-error/-/fastify-error-0.2.0.tgz#9a1c28d4f42b6259e7a549671c8e5e2d85660634"
-  integrity sha512-zabxsBatj59ROG0fhP36zNdc5Q1/eYeH9oSF9uvfrurZf8/JKfrJbMcIGrLpLWcf89rS6L91RHWm20A/X85hcA==
+fastify-error@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/fastify-error/-/fastify-error-0.3.0.tgz#08866323d521156375a8be7c7fcaf98df946fafb"
+  integrity sha512-Jm2LMTB5rsJqlS1+cmgqqM9tTs0UrlgYR7TvDT3ZgXsUI5ib1NjQlqZHf+tDK5tVPdFGwyq02wAoJtyYIRSiFA==
 
 fastify-plugin@^2.0.0:
   version "2.3.0"
@@ -1211,25 +1212,26 @@ fastify-warning@^0.2.0:
   resolved "https://registry.yarnpkg.com/fastify-warning/-/fastify-warning-0.2.0.tgz#e717776026a4493dc9a2befa44db6d17f618008f"
   integrity sha512-s1EQguBw/9qtc1p/WTY4eq9WMRIACkj+HTcOIK1in4MV5aFaQC9ZCIt0dJ7pr5bIf4lPpHvAtP2ywpTNgs7hqw==
 
-fastify@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/fastify/-/fastify-3.2.1.tgz#119250e50a3f49e1a8036a4abaebef9823b0db1c"
-  integrity sha512-2y2qZzS4bqD1cwaX72ot8DjjUFqqxn/SbgKN1xe4vH2HVy7c6u++6IY8HzBRWJv38p3WiBogLWAObxaISxUlJg==
+fastify@^3.10.1:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/fastify/-/fastify-3.10.1.tgz#9a17b395e162e90c2dded93353bf2e04410884ff"
+  integrity sha512-ChjHCXbCFzftVzQ1sDD8f8Ou1uDObkcVXBJmDkzVoZSNTxDrIapg63HIy3tPwScTNyMdmikA+QbP6zkGP+cFzw==
   dependencies:
     abstract-logging "^2.0.0"
     ajv "^6.12.2"
     avvio "^7.1.2"
     fast-json-stringify "^2.2.1"
-    fastify-error "^0.2.0"
+    fastify-error "^0.3.0"
     fastify-warning "^0.2.0"
-    find-my-way "^3.0.0"
+    find-my-way "^3.0.5"
     flatstr "^1.0.12"
-    light-my-request "^4.0.0"
+    light-my-request "^4.2.0"
     pino "^6.2.1"
     proxy-addr "^2.0.5"
     readable-stream "^3.4.0"
     rfdc "^1.1.4"
     secure-json-parse "^2.0.0"
+    semver "^7.3.2"
     tiny-lru "^7.0.0"
 
 fastq@^1.6.1:
@@ -1272,12 +1274,12 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
-find-my-way@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/find-my-way/-/find-my-way-3.0.1.tgz#3df89fd2b145446c09291e1fd0bb67af1177deda"
-  integrity sha512-tHUHIRGTcfl3phGKLZeD2Xkb+I0QZr4xduSwCJG5Ke11pdJTGuMDtAyAiJzUdWBZJgHA0H42Pb0WF3H321KbRA==
+find-my-way@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/find-my-way/-/find-my-way-3.0.5.tgz#f71c5ef1b4865401e1b97ba428121a8f55439eec"
+  integrity sha512-FweGg0cv1sBX8z7WhvBX5B5AECW4Zdh/NiB38Oa0qwSNIyPgRBCl/YjxuZn/rz38E/MMBHeVKJ22i7W3c626Gg==
   dependencies:
-    fast-decode-uri-component "^1.0.0"
+    fast-decode-uri-component "^1.0.1"
     safe-regex2 "^2.0.0"
     semver-store "^0.3.0"
 
@@ -1839,13 +1841,14 @@ lie@3.1.1:
   dependencies:
     immediate "~3.0.5"
 
-light-my-request@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-4.0.1.tgz#7e18f2c3f8535123c329b1ae78a5d6750424a096"
-  integrity sha512-kGRfzvSS9P/zEsnu34pUisOz2FAPqkHFJfdezW6HRzLLlzjY+1LTRRuh2d82SkW/M/QWNVWnXTZ0HMUydz2fgg==
+light-my-request@^4.2.0:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-4.4.1.tgz#bfa2220316eef4f6465bf2f0667780da6b7f6a71"
+  integrity sha512-FDNRF2mYjthIRWE7O8d/X7AzDx4otQHl4/QXbu3Q/FRwBFcgb+ZoDaUd5HwN53uQXLAiw76osN+Va0NEaOW6rQ==
   dependencies:
     ajv "^6.12.2"
     cookie "^0.4.0"
+    fastify-warning "^0.2.0"
     readable-stream "^3.6.0"
     set-cookie-parser "^2.4.1"
 
