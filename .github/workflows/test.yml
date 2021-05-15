@@ -11,7 +11,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-18.04
-    container: node:12.16-buster-slim
+    container: node:14.16-buster-slim
     steps:
       - uses: actions/checkout@v1
       - name: yarn, build, and test

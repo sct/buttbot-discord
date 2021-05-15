@@ -1,4 +1,10 @@
-import Discord, { TextChannel, MessageReaction } from 'discord.js';
+import {
+  Client,
+  Intents,
+  TextChannel,
+  MessageReaction,
+  Message,
+} from 'discord.js';
 
 import logger from '../core/logger';
 import {
@@ -20,19 +26,15 @@ import baseConfig from '../config';
 
 const BOT_SYMBOL = '?';
 
-type CommandReturnTypes = ReturnType<
-  | typeof commandAbout
-  | typeof commandHelp
-  | typeof commandFirstRule
-  | typeof commandButtifyCount
-  | typeof commandServerWhitelist
-  | typeof commandServerAccess
-  | typeof commandServerSetting
-  | typeof commandUnknown
->;
-
 class BotController {
-  public client = new Discord.Client();
+  public client = new Client({
+    intents: [
+      Intents.FLAGS.GUILDS,
+      Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+      Intents.FLAGS.GUILD_EMOJIS,
+    ],
+  });
 
   public connect = (): void => {
     this.client.login(process.env.DISCORD_BOT_TOKEN);
@@ -44,8 +46,8 @@ class BotController {
       );
       logger.info('Connected to Discord');
 
-      this.client.user.setPresence({
-        activity: { name: 'buttbot.net | ?butt about' },
+      this.client.user.setActivity('buttbot.net | ?butt about', {
+        type: 'PLAYING',
       });
     });
 
@@ -68,7 +70,7 @@ class BotController {
     });
   };
 
-  public handleCommand = async (message: Discord.Message): Promise<void> => {
+  public handleCommand = async (message: Message): Promise<void> => {
     const command = message.content
       .replace(`${BOT_SYMBOL}butt `, '')
       .split(' ');
@@ -109,7 +111,7 @@ class BotController {
     }
   };
 
-  public async handleButtChance(message: Discord.Message): Promise<void> {
+  public async handleButtChance(message: Message): Promise<void> {
     logger.debug('Handling butt chance');
     try {
       const server = await servers.getServer(message.guild.id);
@@ -165,9 +167,7 @@ class BotController {
           message.content,
           wordsWithScores
         );
-        const buttMessage = (await message.channel.send(
-          result
-        )) as Discord.Message;
+        const buttMessage = (await message.reply(result)) as Message;
         logger.debug('Send buttified message to channel', { result });
 
         // Our dumb buttAI code
