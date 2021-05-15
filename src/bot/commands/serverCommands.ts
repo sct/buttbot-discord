@@ -112,6 +112,8 @@ export const commandServerSetting = async (
     message.channel.send('You must pass in a value');
   }
 
+  const parsedNumber = parseInt(value);
+
   switch (setting) {
     case 'chanceToButt':
       if (parseFloat(value) < 0 || parseFloat(value) > 1) {
@@ -137,7 +139,6 @@ export const commandServerSetting = async (
       return server.setSetting(setting, Number(value));
     case 'buttBuffer':
       // Check if value is actually a number
-      const parsedNumber = parseInt(value);
       if (isNaN(parsedNumber)) {
         message.channel.send('Please provide a valid number');
         throw new Error('Invalid value passed in for buttBuffer');

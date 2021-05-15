@@ -20,17 +20,6 @@ import baseConfig from '../config';
 
 const BOT_SYMBOL = '?';
 
-type CommandReturnTypes = ReturnType<
-  | typeof commandAbout
-  | typeof commandHelp
-  | typeof commandFirstRule
-  | typeof commandButtifyCount
-  | typeof commandServerWhitelist
-  | typeof commandServerAccess
-  | typeof commandServerSetting
-  | typeof commandUnknown
->;
-
 class BotController {
   public client = new Discord.Client();
 
