@@ -1,6 +1,6 @@
 import Servers from '../../core/handlers/Servers';
 import logger from '../../core/logger';
-import { Message } from 'discord.js';
+import { Message, TextChannel } from 'discord.js';
 
 const verifyPermission = async (message: Message): Promise<boolean> => {
   const server = await Servers.getServer(message.guild.id);
@@ -11,7 +11,7 @@ const verifyPermission = async (message: Message): Promise<boolean> => {
   if (
     member.id !== message.guild.ownerID &&
     !roles.find((roleId) => !!member.roles.cache.get(roleId)) &&
-    !member.hasPermission('MANAGE_GUILD')
+    !member.permissions.has('MANAGE_GUILD')
   ) {
     message.channel.send('You do not have permission to manage buttification');
     logger.debug('Unauthorized user attempting command access');
@@ -42,6 +42,10 @@ export const commandServerWhitelist = async (
 
   if (!channel) {
     return message.channel.send('You must provide a channel mention');
+  }
+
+  if (!(channel instanceof TextChannel)) {
+    return message.channel.send('You must provide a valid channel');
   }
 
   server.updateWhitelist(channel.name, whitelist.includes(channel.name));
