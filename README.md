@@ -18,6 +18,11 @@ I cannot promise this will always be working as intended but I will do my best. 
 
 ## Changelog
 
+### 1.5.0
+
+- ButtBot will now use Discord's build in reply functionality when buttifying messages
+- ButtBot will no longer buttify url's
+
 ### 1.4.5
 
 - Fixes an issue where some words contained the configured meme but were still being chosen to be changed (Thank you @nicospz)
