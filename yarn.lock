@@ -937,7 +937,8 @@ discord-api-types@^0.18.1:
 
 discord.js@discordjs/discord.js:
   version "13.0.0-dev"
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/6cebeae15e97e29acbdaf95bc7b17a1e346a2c34"
+  uid "7346621d15c96906d5b848c483669750ff9c6e12"
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/7346621d15c96906d5b848c483669750ff9c6e12"
   dependencies:
     "@discordjs/collection" "^0.1.6"
     "@discordjs/form-data" "^3.0.1"
