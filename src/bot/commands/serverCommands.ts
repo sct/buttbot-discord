@@ -1,6 +1,6 @@
 import Servers from '../../core/handlers/Servers';
 import logger from '../../core/logger';
-import { Message, TextChannel } from 'discord.js';
+import { Message, Snowflake, TextChannel } from 'discord.js';
 
 const verifyPermission = async (message: Message): Promise<boolean> => {
   const server = await Servers.getServer(message.guild.id);
@@ -10,7 +10,7 @@ const verifyPermission = async (message: Message): Promise<boolean> => {
 
   if (
     member.id !== message.guild.ownerID &&
-    !roles.find((roleId) => !!member.roles.cache.get(roleId)) &&
+    !roles.find((roleId) => !!member.roles.cache.get(roleId as Snowflake)) &&
     !member.permissions.has('MANAGE_GUILD')
   ) {
     message.channel.send('You do not have permission to manage buttification');
