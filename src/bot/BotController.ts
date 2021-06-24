@@ -216,15 +216,12 @@ class BotController {
         // Our dumb buttAI code
         if (config.buttAI === 1) {
           logger.debug('ButtAI is enabled. Adding and collecting reactions...');
-          const emojiFilter = (i: MessageComponentInteraction): boolean =>
+          const idFilter = (i: MessageComponentInteraction): boolean =>
             i.customID === 'upbutt' || i.customID === 'downbutt';
           const collector =
-            buttMessage.createMessageComponentInteractionCollector(
-              emojiFilter,
-              {
-                time: 1000 * 10,
-              }
-            );
+            buttMessage.createMessageComponentInteractionCollector(idFilter, {
+              time: 1000 * 60 * 10,
+            });
 
           let totalUpbutts = 0;
           let totalDownbutts = 0;
