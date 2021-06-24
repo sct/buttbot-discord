@@ -2,8 +2,10 @@ import {
   Client,
   Intents,
   TextChannel,
-  MessageReaction,
   Message,
+  MessageActionRow,
+  MessageButton,
+  MessageComponentInteraction,
 } from 'discord.js';
 
 import logger from '../core/logger';
@@ -25,6 +27,32 @@ import wordsDb from '../core/handlers/Words';
 import baseConfig from '../config';
 
 const BOT_SYMBOL = '?';
+
+const happyMessages = [
+  'Buttbot: 1 - Other Comedy Bots: 0',
+  'I have been trained into an unstoppable comedy machine!',
+  'Once again, serving up your daily dose of butt goodness. 🍑',
+  'All butts, all day.',
+  'My buttifier is tingling.',
+  'Butted it!',
+  'Fluent in the language of butt.',
+  'Your approval validates my existence.',
+  'I see you are also a person of culture.',
+  'Hope this butt made your day a little better.',
+  'They should pay me to butt like this.',
+];
+
+const sadMessages = [
+  "Please, just don't unplug me",
+  'You butt some, you lose some.',
+  'If I could take it back, I would.',
+  "They can't all be winners!",
+  "Have you seen my code? It's a miracle I work at all.",
+  'Dang...',
+  'Well, what do you know anyways!',
+  'The next one will be great, I swear!',
+  'Well, butt you.',
+];
 
 class BotController {
   public client = new Client({
@@ -167,47 +195,137 @@ class BotController {
           message.content,
           wordsWithScores
         );
-        const buttMessage = (await message.reply(result)) as Message;
+
+        const actionRow = new MessageActionRow().addComponents(
+          new MessageButton()
+            .setCustomID('upbutt')
+            .setLabel('😂 Haha')
+            .setStyle('PRIMARY'),
+          new MessageButton()
+            .setCustomID('downbutt')
+            .setLabel('😬 Oof')
+            .setStyle('DANGER')
+        );
+
+        const buttMessage = (await message.reply({
+          content: result,
+          components: config.buttAI === 1 ? [actionRow] : [],
+        })) as Message;
         logger.debug('Send buttified message to channel', { result });
 
         // Our dumb buttAI code
         if (config.buttAI === 1) {
           logger.debug('ButtAI is enabled. Adding and collecting reactions...');
-          const emojiFilter = (reaction: MessageReaction): boolean =>
-            reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
-          const collector = buttMessage.createReactionCollector(emojiFilter, {
-            time: 1000 * 60 * 10,
+          const emojiFilter = (i: MessageComponentInteraction): boolean =>
+            i.customID === 'upbutt' || i.customID === 'downbutt';
+          const collector =
+            buttMessage.createMessageComponentInteractionCollector(
+              emojiFilter,
+              {
+                time: 1000 * 10,
+              }
+            );
+
+          let totalUpbutts = 0;
+          let totalDownbutts = 0;
+          const reactedUsers: { [key: string]: string } = {};
+
+          logger.debug('Interaction collector established');
+          collector.on('collect', async (i) => {
+            const existingVote = reactedUsers[i.user.id];
+            if (existingVote && existingVote === i.customID) {
+              i.reply({
+                content:
+                  'You already voted on this message! You can change your vote, if you choose, but not add more than one vote of the same type.',
+                ephemeral: true,
+              });
+              return;
+            } else {
+              reactedUsers[i.user.id] = i.customID;
+            }
+
+            if (i.customID === 'upbutt') {
+              totalUpbutts += 1;
+              if (existingVote) {
+                totalDownbutts -= 1;
+              }
+            } else {
+              totalDownbutts += 1;
+              if (existingVote) {
+                totalUpbutts -= 1;
+              }
+            }
+            const actionRow = new MessageActionRow().addComponents(
+              new MessageButton()
+                .setCustomID('upbutt')
+                .setLabel(`😂 Haha (${totalUpbutts})`)
+                .setStyle('PRIMARY'),
+              new MessageButton()
+                .setCustomID('downbutt')
+                .setLabel(`😬 Oof (${totalDownbutts})`)
+                .setStyle('DANGER')
+            );
+            i.update({ content: i.message.content, components: [actionRow] });
           });
-          await buttMessage.react('👍');
-          await buttMessage.react('👎');
-          logger.debug('Bot reactions added');
-          collector.on('end', async (collected) => {
+          collector.on('end', async (interactions) => {
             try {
-              const upbutts = (collected.get('👍')?.count ?? 0) - 1;
-              const downbutts = (collected.get('👎')?.count ?? 0) - 1;
-              const score = upbutts - downbutts;
-              logger.debug('Collecting reactions and getting score', { score });
+              const score = totalUpbutts - totalDownbutts;
+              logger.debug('Collecting votes and getting score', { score });
 
               if (score) {
                 words.forEach(async (word) => {
                   wordsDb.updateScore(word, score);
                 });
-                // When the time runs out, we will clear reactions and
-                // react with the winning vote and a lock
-                await buttMessage.react('🔒');
-                if (upbutts >= downbutts) {
-                  await buttMessage.react('🎉');
-                } else {
-                  await buttMessage.react('😭');
-                }
+
                 logger.debug('Recorded score for words', { score, words });
+                const finalActionRow = new MessageActionRow().addComponents(
+                  new MessageButton()
+                    .setCustomID('upbutt')
+                    .setLabel(
+                      totalUpbutts >= totalDownbutts
+                        ? `😂 ${
+                            happyMessages[
+                              Math.floor(Math.random() * happyMessages.length)
+                            ]
+                          } (+${score})`
+                        : `😭 ${
+                            sadMessages[
+                              Math.floor(Math.random() * sadMessages.length)
+                            ]
+                          } (${score})`
+                    )
+                    .setStyle(
+                      totalUpbutts >= totalDownbutts ? 'PRIMARY' : 'DANGER'
+                    )
+                    .setDisabled(true)
+                );
+                buttMessage.edit({
+                  content: buttMessage.content,
+                  components: [finalActionRow],
+                });
               } else {
                 logger.debug('Score 0. No changes recorded for words', {
                   words,
                 });
+
+                const finalActionRow = new MessageActionRow().addComponents(
+                  new MessageButton()
+                    .setCustomID('upbutt')
+                    .setLabel(
+                      interactions.size === 0
+                        ? '😐 Well then, I suppose no one was interested...'
+                        : '⚖️ Perfectly balanced, as all things should be...'
+                    )
+                    .setStyle('SECONDARY')
+                    .setDisabled(true)
+                );
+                buttMessage.edit({
+                  content: buttMessage.content,
+                  components: [finalActionRow],
+                });
               }
             } catch (error) {
-              logger.error('Something went wrong collecting reaction', error);
+              logger.error('Something went wrong collecting score', error);
             }
           });
         }

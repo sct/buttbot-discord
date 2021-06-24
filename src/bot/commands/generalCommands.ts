@@ -27,15 +27,23 @@ Whats the deal with these reactions on every message now? This is a experiemntal
 `
     )
     .addField('Help Command', '?butt help')
-    .addField('Buttified Servers', message.client.guilds.cache.size, true)
-    .addField('Global Buttified Messages', buttifyCount, true)
-    .addField("This Server's Buttifications", serverButtifyCount, true)
+    .addField(
+      'Buttified Servers',
+      message.client.guilds.cache.size.toString(),
+      true
+    )
+    .addField('Global Buttified Messages', buttifyCount.toString(), true)
+    .addField(
+      "This Server's Buttifications",
+      serverButtifyCount.toString(),
+      true
+    )
     .addField('Want ButtBot on your server?', 'https://buttbot.net')
     .addField('GitHub', 'https://github.com/sct/buttbot-discord')
     .setFooter(`Version: ${version}`)
     .setColor([212, 228, 32]);
 
-  message.channel.send(embed);
+  message.channel.send({ embeds: [embed] });
 };
 
 export const commandHelp = (message: Message): void => {
@@ -56,7 +64,7 @@ export const commandHelp = (message: Message): void => {
     .setFooter('Never forget the firstrule')
     .setColor([212, 228, 32]);
 
-  message.channel.send(embed);
+  message.channel.send({ embeds: [embed] });
 };
 
 export const commandFirstRule = (message: Message): void => {
