@@ -34,7 +34,7 @@
     "typescript": "4.3.4"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.4",
     "discord.js": "discordjs/discord.js",
     "dotenv": "^9.0.2",
     "fastify": "^3.18.0",
